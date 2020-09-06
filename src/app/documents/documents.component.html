@@ -1,138 +1,76 @@
-<!--&lt;!&ndash;<app-list></app-list>&ndash;&gt;-->
-<!--&lt;!&ndash;<p>ngx-datatable see for tables how to add</p>&ndash;&gt;-->
+<div class="mat-elevation-z8 mt-4">
 
-<!--<div>-->
-<!--  <h3>-->
-<!--    Bootstrap Theme-->
-<!--  </h3>-->
-<!--  <ngx-datatable-->
-<!--    class="bootstrap"-->
-<!--    [rows]="rows"-->
-<!--    [loadingIndicator]="loadingIndicator"-->
-<!--    [columns]="columns"-->
-<!--    [columnMode]="ColumnMode.force"-->
-<!--    [headerHeight]="40"-->
-<!--    [summaryRow]="true"-->
-<!--    [summaryPosition]="'bottom'"-->
-<!--    [footerHeight]="40"-->
-<!--    [limit]="10"-->
-<!--    rowHeight="auto"-->
-<!--    [reorderable]="reorderable"-->
-<!--    (activate)="onActivate($event)"-->
+  <form class="example-form" style="margin-left: 15px;">
+    <mat-form-field class="example-full-width mt-4">
+      <mat-label>Filter</mat-label>
+      <input matInput placeholder="Ex. Pizza" value="To be filled">
+    </mat-form-field>
+  </form>
 
-<!--  >-->
-<!--&lt;!&ndash;    <ngx-datatable-column *ngFor="let column of columns; let i = index;" name="{{column.name}}" prop="{{column.prop}}">&ndash;&gt;-->
-<!--&lt;!&ndash;      <ng-template let-value="value" let-row="row" *ngIf="column.name==='Actions'" ngx-datatable-cell-template>&ndash;&gt;-->
-<!--&lt;!&ndash;      <span>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button style="background-color:red;height:15px;" (click)='onSelectRed(row)'><i&ndash;&gt;-->
-<!--&lt;!&ndash;          class="rb-ic rb-ic-add-frame"></i></button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button style="background-color:blue;height:15px;" class="btn" (click)='onSelectBlue(value)'><i&ndash;&gt;-->
-<!--&lt;!&ndash;          class="rb-ic rb-ic-add-frame"></i></button>&ndash;&gt;-->
-<!--&lt;!&ndash;      </span>&ndash;&gt;-->
-<!--&lt;!&ndash;      </ng-template>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ngx-datatable-column>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <ngx-datatable-column name="id" >&ndash;&gt;-->
-<!--&lt;!&ndash;      <ng-template let-column="column" ngx-datatable-header-template>&ndash;&gt;-->
-<!--&lt;!&ndash;        actions&ndash;&gt;-->
-<!--&lt;!&ndash;      </ng-template>&ndash;&gt;-->
-<!--&lt;!&ndash;      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>&ndash;&gt;-->
-<!--&lt;!&ndash;        <i class="pb-icon icon-edit" (click)="detail(row)"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;        <i *ngIf="row.canDelete == true" class="pb-icon icon-garbage" (click)="delete(row)"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;        <i *ngIf="row.canSend== true" class="pb-icon icon-send" (click)="send(row)"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;      </ng-template>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ngx-datatable-column>&ndash;&gt;-->
-
-<!--  </ngx-datatable>-->
-<!--</div>-->
+  <div>
+    <mat-form-field *ngFor="let filter of filterSelectObj" style="margin-left: 15px;">
+      <mat-label>Filter {{filter.name}}</mat-label>
+      <select matNativeControl name="{{filter.columnProp}}" [(ngModel)]="filter.modelValue"
+              (change)="filterChange(filter,$event)">
+        <option value="">-- Select {{filter.name}} --</option>
+        <option [value]="item" *ngFor="let item of filter.options">{{item}}</option>
+      </select>
+    </mat-form-field>
+    &nbsp;
+    <button mat-flat-button color="warn" (click)="resetFilters()">Reset</button>
+  </div>
 
 
-<div>
-  <h3>
-    Row Detail Demo
-    <small>
-      <a
-        href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/basic/row-detail.component.ts"
-        target="_blank"
-      >
-        Source
-      </a>
-    </small>
-    <small>
-      <a href="javascript:void(0)" (click)="table.rowDetail.expandAllRows()">Expand All</a>
-      |
-      <a href="javascript:void(0)" (click)="table.rowDetail.collapseAllRows()">Collapse All</a>
-    </small>
-  </h3>
-  <ngx-datatable
-    #myTable
-    class="material expandable"
-    [columnMode]="ColumnMode.force"
-    [headerHeight]="50"
-    [footerHeight]="50"
-    [rowHeight]="50"
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+      <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+      <div *ngIf="column !== 'documentProcessStatus'">
+        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+      </div>
+
+      <div *ngIf="column === 'documentProcessStatus'">
+        <td mat-cell *matCellDef="let element"> {{element.asyncApiInfo.documentProcessStatus}} </td>
+      </div>
+
+    </ng-container>
+
+    <!--    &lt;!&ndash; Position Column &ndash;&gt;-->
+    <!--    <ng-container matColumnDef="id">-->
+    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id</th>-->
+    <!--      <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
+    <!--    </ng-container>-->
+
+    <!--    &lt;!&ndash; origName Column &ndash;&gt;-->
+    <!--    <ng-container matColumnDef="origName">-->
+    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> File Name</th>-->
+    <!--      <td mat-cell *matCellDef="let element"> {{element.origName}} </td>-->
+    <!--    </ng-container>-->
 
 
-    [rows]="rows"
-    (page)="onPage($event)"
-  >
-    <!-- Row Detail Template -->
-    <ngx-datatable-row-detail rowHeight="auto" #myDetailRow (toggle)="onDetailToggle($event)">
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-        <div style="padding-left:25px;">
+    <!--    &lt;!&ndash; createDateTime Column &ndash;&gt;-->
+    <!--    <ng-container matColumnDef="createDateTime">-->
+    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Time</th>-->
+    <!--      <td mat-cell *matCellDef="let element"> {{element.createDateTime | date: 'dd.MM.yyyy HH:mm'}} </td>-->
+    <!--    </ng-container>-->
 
-          <app-async-api-info [row]="row"></app-async-api-info>
+    <!--    &lt;!&ndash; updateDateTime Column &ndash;&gt;-->
+    <!--    <ng-container matColumnDef="updateDateTime">-->
+    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Updated Time</th>-->
+    <!--      <td mat-cell *matCellDef="let element"> {{element.updateDateTime | date: 'dd.MM.yyyy HH:mm'}} </td>-->
+    <!--    </ng-container>-->
 
-          <app-doc-config [row]="row"></app-doc-config>
+    <!--    &lt;!&ndash; updateDateTime Column &ndash;&gt;-->
+    <!--    <ng-container matColumnDef="documentProcessStatus">-->
+    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Document Status</th>-->
+    <!--      <td mat-cell *matCellDef="let element"> {{element.asyncApiInfo.documentProcessStatus}} </td>-->
+    <!--    </ng-container>-->
 
-          <app-pages [row]="row"></app-pages>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 
-        </div>
-      </ng-template>
-    </ngx-datatable-row-detail>
-    <!-- Column Templates -->
-    <ngx-datatable-column
-      [width]="50"
-      [resizeable]="false"
-      [sortable]="false"
-      [draggable]="false"
-      [canAutoResize]="false"
-    >
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-
-        <!--                        href="#"-->
-        <a
-          href="javascript:void(0)"
-          [class.datatable-icon-right]="!expanded"
-          [class.datatable-icon-down]="expanded"
-          title="Expand/Collapse Row"
-          (click)="toggleExpandRow(row)"
-        >
-        </a>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="Index" [width]="80">
-      <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
-        <strong>{{ rowIndex }}</strong>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="Expanded" [width]="80">
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-        <strong>{{ expanded === 1 }}</strong>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="id" [width]="200">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        <strong>{{ value }}</strong>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="Original file name" [width]="300">
-      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-        <i [innerHTML]="row['origName']"></i> and <i>{{ value }}</i>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="path"></ngx-datatable-column>
-
-  </ngx-datatable>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
 </div>
+

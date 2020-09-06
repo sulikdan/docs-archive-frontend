@@ -1,148 +1,187 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ColumnMode} from '@swimlane/ngx-datatable';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DocumentService} from './document.service';
-// import { ColumnMode } from '@swimlane/ngx-datatable/public-api';
-// import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
+import {MatPaginator} from '@angular/material/paginator';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
 
 @Component({
-    selector: 'app-documents',
-    templateUrl: './documents.component.html',
-    encapsulation: ViewEncapsulation.Emulated
+  selector: 'app-documents',
+  templateUrl: './documents.component.html',
+  styleUrls: ['./documents.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
-export class DocumentsComponent implements OnInit {
+export class DocumentsComponent implements OnInit, AfterViewInit {
+
+  documents: Document[];
+
+  loadingIndicator = false;
+
+  filterValues = {};
+  filterSelectObj = [];
+
+  // displayedColumns = ['id', 'origName', 'path', 'createDateTime', 'updateDateTime', 'documentProcessStatus'];
+  displayedColumns = ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus'];
+  dataSource: MatTableDataSource<Document> = new MatTableDataSource<Document>();
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private documentService: DocumentService) {
+
+    this.fetch(data => {
+      setTimeout(() => {
+        this.loadingIndicator = false;
+      }, 1500);
+    });
+
+    // Object to create Filter for
+    this.filterSelectObj = [
+      {
+        name: 'ID',
+        columnProp: 'id',
+        options: []
+      }, {
+        name: 'origName',
+        columnProp: 'origName',
+        options: []
+      }, {
+        name: 'createDateTime',
+        columnProp: 'createDateTime',
+        options: []
+      }, {
+        name: 'updateDateTime',
+        columnProp: 'updateDateTime',
+        options: []
+      }, {
+        name: 'documentProcessStatus',
+        columnProp: 'documentProcessStatus',
+        options: []
+      }
+    ];
+
+  }
 
 
-    @ViewChild('myTable') table: any;
+  ngAfterViewInit() {
+    // this.dataSource.sort = this.sort;
+  }
 
-    rows: any[] = [];
-    expanded: any = {};
-    timeout: any;
+  ngOnInit(): void {
 
-    ColumnMode = ColumnMode;
+    this.fetch(data => {
+      setTimeout(() => {
+        this.loadingIndicator = false;
+      }, 1500);
+    });
+
+    this.dataSource.filterPredicate = this.createFilter();
+  }
+
+  fetch(callback) {
+
+    this.loadingIndicator = true;
+
+    // TODO record subscriptioN??
+    this.documentService.getDocuments().subscribe(data => {
+      console.log('working?', data);
+
+      this.documents = data;
+      this.dataSource = new MatTableDataSource<Document>(this.documents);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }, error => {
+      console.log('Error loading data..', error);
+    }, () => {
+      console.log('Finished!');
+      this.loadingIndicator = false;
+    });
+
+    this.filterSelectObj.filter((o) => {
+      o.options = this.getFilterObject(this.dataSource.data, o.columnProp);
+    });
 
 
-    // rows = [];
-    loadingIndicator = false;
-    // reorderable = true;
-    //
-    // columns = [
-    //   {prop: 'id', summaryFunc: () => null},
-    //   {name: 'filePath', summaryFunc: cells => this.summaryForGender(cells)},
-    //   {name: 'origName', summaryFunc: () => null},
-    //   {name: 'createDateTime', summaryFunc: () => null},
-    //   {name: 'asyncApiInfo', summaryFunc: () => null},
-    //   {name: 'docConfig', summaryFunc: () => null}
-    // ];
-    //
-    // ColumnMode = ColumnMode;
+  }
 
 
-    constructor(private documentService: DocumentService) {
 
-        this.fetch(data => {
-            this.rows = data;
-            setTimeout(() => {
-                this.loadingIndicator = false;
-            }, 1500);
-        });
+  send(row: any) {
 
-    }
+  }
 
-    ngOnInit(): void {
-        this.loadingIndicator = true;
+  // Get Uniqu values from columns to build filter
+  getFilterObject(fullObj, key) {
+    const uniqChk = [];
+    fullObj.filter((obj) => {
+      if (!uniqChk.includes(obj[key])) {
+        uniqChk.push(obj[key]);
+      }
+      return obj;
+    });
+    return uniqChk;
+  }
 
-        this.documentService.getDocuments().subscribe(data => {
-            console.log('working?', data);
-            this.rows = data;
-            // setTimeout(() => {
-            //     this.loadingIndicator = false;
-            // }, 1500);
-        }, error => {
-            console.log('Error loading data..', error);
-        }, () => {
-            console.log('Finished!');
-            this.loadingIndicator = false;
-        });
-    }
+  // Called on Filter change
+  filterChange(filter, event) {
+    // let filterValues = {}
+    this.filterValues[filter.columnProp] = event.target.value.trim().toLowerCase();
+    this.dataSource.filter = JSON.stringify(this.filterValues);
+  }
 
-    fetch(cb) {
 
-        this.loadingIndicator = true;
-
-        this.documentService.getDocuments().subscribe(data => {
-            console.log('working?', data);
-            this.rows = data;
-            // setTimeout(() => {
-            //     this.loadingIndicator = false;
-            // }, 1500);
-        }, error => {
-            console.log('Error loading data..', error);
-        }, () => {
-            console.log('Finished!');
-            this.loadingIndicator = false;
-        });
-
-        // const req = new XMLHttpRequest();
-        // req.open('GET', `http://localhost:8081/api/documents/`);
-        //
-        // req.onload = () => {
-        //     cb(JSON.parse(req.response));
-        // };
-        //
-        // req.send();
-    }
-
-    private summaryForGender(cells: string[]) {
-        // const males = cells.filter(cell => cell === 'male').length;
-        // const females = cells.filter(cell => cell === 'female').length;
-        //
-        // return `males: ${males}, females: ${females}`;
-    }
-
-    onActivate(event) {
-        if (event.type === 'click') {
-            console.log(event.row);
-            console.log(event.type);
+  // Custom filter method fot Angular Material Datatable
+  createFilter() {
+    // tslint:disable-next-line:only-arrow-functions
+    const filterFunction = function(data: any, filter: string): boolean {
+      const searchTerms = JSON.parse(filter);
+      let isFilterSet = false;
+      for (const col in searchTerms) {
+        if (searchTerms[col].toString() !== '') {
+          isFilterSet = true;
+        } else {
+          delete searchTerms[col];
         }
-    }
+      }
 
-    onSelect(row) {
+      console.log(searchTerms);
 
-    }
+      const nameSearch = () => {
+        let found = false;
+        if (isFilterSet) {
+          // tslint:disable-next-line:forin
+          for (const col in searchTerms) {
+            searchTerms[col].trim().toLowerCase().split(' ').forEach(word => {
+              if (data[col].toString().toLowerCase().indexOf(word) !== -1 && isFilterSet) {
+                found = true;
+              }
+            });
+          }
+          return found;
+        } else {
+          return true;
+        }
+      };
+      return nameSearch();
+    };
+    return filterFunction;
+  }
 
-    onSelectRed(row) {
 
-    }
+  // Reset table filters
+  resetFilters() {
+    this.filterValues = {};
+    this.filterSelectObj.forEach((value, key) => {
+      value.modelValue = undefined;
+    });
+    this.dataSource.filter = '';
+  }
 
-    onSelectBlue(value) {
-
-    }
-
-    detail(row: any) {
-
-    }
-
-    delete(row: any) {
-
-    }
-
-    send(row: any) {
-
-    }
-
-    onPage(event) {
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => {
-            console.log('paged!', event);
-        }, 100);
-    }
-
-    toggleExpandRow(row) {
-        console.log('Toggled Expand Row!', row);
-        this.table.rowDetail.toggleExpandRow(row);
-    }
-
-    onDetailToggle(event) {
-        console.log('Detail Toggled', event);
-    }
 }
