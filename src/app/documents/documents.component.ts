@@ -1,9 +1,12 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DocumentService} from './document.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Document} from '../shared/document.model';
+import {Subscription} from 'rxjs';
+import {Page} from '../shared/page.model';
 
 
 @Component({
@@ -18,29 +21,32 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     ]),
   ],
 })
-export class DocumentsComponent implements OnInit, AfterViewInit {
+export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  newDataSub: Subscription;
+
+  pageSize: number;
+  pageIndex: number;
+  totalSize: number;
 
   documents: Document[];
 
   loadingIndicator = false;
+  expandedElement: Document | null;
 
   filterValues = {};
   filterSelectObj = [];
 
   // displayedColumns = ['id', 'origName', 'path', 'createDateTime', 'updateDateTime', 'documentProcessStatus'];
   displayedColumns = ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus'];
+  // columnsToDisplay = ['id', 'origName', 'createDateTime', 'updateDateTime'];
+
   dataSource: MatTableDataSource<Document> = new MatTableDataSource<Document>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private documentService: DocumentService) {
-
-    this.fetch(data => {
-      setTimeout(() => {
-        this.loadingIndicator = false;
-      }, 1500);
-    });
 
     // Object to create Filter for
     this.filterSelectObj = [
@@ -71,10 +77,26 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit() {
+    // this.dataSource.paginator = this.paginator;
     // this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
+    this.pageSize = 2;
+    this.pageIndex = 0;
+
+    this.newDataSub = this.documentService.newDataReceivedSubject.subscribe((value: Page) => {
+      if (value) {
+        // this.totalSize = this.documentService.totalElements;
+        // this.documents = this.documentService.allDocumentList;
+        // this.dataSource = new MatTableDataSource<Document>(this.documents);
+        this.totalSize = value.totalElements;
+        this.documents = value.content;
+        this.dataSource = new MatTableDataSource<Document>(this.documents);
+      }
+      this.loadingIndicator = false;
+    });
+
 
     this.fetch(data => {
       setTimeout(() => {
@@ -84,33 +106,6 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
 
     this.dataSource.filterPredicate = this.createFilter();
   }
-
-  fetch(callback) {
-
-    this.loadingIndicator = true;
-
-    // TODO record subscriptioN??
-    this.documentService.getDocuments().subscribe(data => {
-      console.log('working?', data);
-
-      this.documents = data;
-      this.dataSource = new MatTableDataSource<Document>(this.documents);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    }, error => {
-      console.log('Error loading data..', error);
-    }, () => {
-      console.log('Finished!');
-      this.loadingIndicator = false;
-    });
-
-    this.filterSelectObj.filter((o) => {
-      o.options = this.getFilterObject(this.dataSource.data, o.columnProp);
-    });
-
-
-  }
-
 
 
   send(row: any) {
@@ -184,4 +179,34 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = '';
   }
 
+  getServerData(event?: PageEvent) {
+    console.log('Table data: \n pageSize:' + event.pageSize + '\n pageIndex:' + this.pageIndex + '\n totalSize:' + this.totalSize);
+
+    // this.pageSize =
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+
+    console.log('Changed page size...');
+    this.fetch(data => {
+      setTimeout(() => {
+        this.loadingIndicator = false;
+      }, 9500);
+    });
+  }
+
+  fetch(callback) {
+    this.loadingIndicator = true;
+
+    // TODO record subscriptioN??
+    this.documentService.getDocuments(this.pageIndex, this.pageSize);
+
+    this.filterSelectObj.filter((o) => {
+      o.options = this.getFilterObject(this.dataSource.data, o.columnProp);
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.newDataSub.unsubscribe();
+  }
 }

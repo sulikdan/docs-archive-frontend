@@ -1,12 +1,17 @@
+<!-- Custom search to server -->
+<app-document-search></app-document-search>
+
+
 <div class="mat-elevation-z8 mt-4">
+  <!-- Filter || search -->
+  <!--  <form class="example-form" style="margin-left: 15px;">-->
+  <!--    <mat-form-field class="example-full-width mt-4">-->
+  <!--      <mat-label>Filter</mat-label>-->
+  <!--      <input matInput placeholder="Ex. Pizza" value="TODO">-->
+  <!--    </mat-form-field>-->
+  <!--  </form>-->
 
-  <form class="example-form" style="margin-left: 15px;">
-    <mat-form-field class="example-full-width mt-4">
-      <mat-label>Filter</mat-label>
-      <input matInput placeholder="Ex. Pizza" value="To be filled">
-    </mat-form-field>
-  </form>
-
+  <!-- Filters over columns -->
   <div>
     <mat-form-field *ngFor="let filter of filterSelectObj" style="margin-left: 15px;">
       <mat-label>Filter {{filter.name}}</mat-label>
@@ -21,56 +26,60 @@
   </div>
 
 
-  <table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
+    <!--  Columns  -->
     <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-      <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-      <div *ngIf="column !== 'documentProcessStatus'">
-        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-      </div>
-
-      <div *ngIf="column === 'documentProcessStatus'">
-        <td mat-cell *matCellDef="let element"> {{element.asyncApiInfo.documentProcessStatus}} </td>
-      </div>
-
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="column !== 'documentProcessStatus'">
+          {{element[column]}}
+        </div>
+        <div *ngIf="column === 'documentProcessStatus'">
+          {{element.docState}}
+        </div>
+      </td>
     </ng-container>
 
-    <!--    &lt;!&ndash; Position Column &ndash;&gt;-->
-    <!--    <ng-container matColumnDef="id">-->
-    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id</th>-->
-    <!--      <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
-    <!--    </ng-container>-->
 
-    <!--    &lt;!&ndash; origName Column &ndash;&gt;-->
-    <!--    <ng-container matColumnDef="origName">-->
-    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> File Name</th>-->
-    <!--      <td mat-cell *matCellDef="let element"> {{element.origName}} </td>-->
-    <!--    </ng-container>-->
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail"
+             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
 
+          <div style="padding-left:25px;">
 
-    <!--    &lt;!&ndash; createDateTime Column &ndash;&gt;-->
-    <!--    <ng-container matColumnDef="createDateTime">-->
-    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Time</th>-->
-    <!--      <td mat-cell *matCellDef="let element"> {{element.createDateTime | date: 'dd.MM.yyyy HH:mm'}} </td>-->
-    <!--    </ng-container>-->
+            <!--            <app-async-api-info [row]="element" *ngIf="element.asyncApiInfo !== null"></app-async-api-info>-->
+            <p>Yolo</p>
 
-    <!--    &lt;!&ndash; updateDateTime Column &ndash;&gt;-->
-    <!--    <ng-container matColumnDef="updateDateTime">-->
-    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Updated Time</th>-->
-    <!--      <td mat-cell *matCellDef="let element"> {{element.updateDateTime | date: 'dd.MM.yyyy HH:mm'}} </td>-->
-    <!--    </ng-container>-->
+            <app-doc-config [row]="element" *ngIf="element.docConfig !== null"></app-doc-config>
 
-    <!--    &lt;!&ndash; updateDateTime Column &ndash;&gt;-->
-    <!--    <ng-container matColumnDef="documentProcessStatus">-->
-    <!--      <th mat-header-cell *matHeaderCellDef mat-sort-header> Document Status</th>-->
-    <!--      <td mat-cell *matCellDef="let element"> {{element.asyncApiInfo.documentProcessStatus}} </td>-->
-    <!--    </ng-container>-->
+            <app-pages [row]="element" *ngIf="element.pages !== null"></app-pages>
+
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns; "
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
+    <!--    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="example-detail-row"></tr>-->
+    <!--    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>-->
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[1,2 ,5, 10, 20]"
+                 [length]="totalSize"
+                 [pageSize]="pageSize"
+                 [pageIndex]="pageIndex"
+                 showFirstLastButtons
+                 (page)="getServerData($event)"></mat-paginator>
 
 </div>
 
