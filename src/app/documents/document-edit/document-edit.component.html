@@ -1,0 +1,142 @@
+<!-- dialog-box.component.html -->
+<!--<mat-card>-->
+<!--  <mat-card-title>-->
+<h1 mat-dialog-title *ngIf="action !== 'Delete'"><strong>Update document</strong></h1>
+<h1 mat-dialog-title *ngIf="action === 'Delete'"><strong>Delete document</strong></h1>
+<!--  </mat-card-title>-->
+<!--  <mat-card-content>-->
+<form #documentForm="ngForm" (ngSubmit)="doAction(documentForm)">
+
+
+  <div mat-dialog-content>
+
+    <div class="example-document" *ngIf="action !== 'Delete'; else elseTemplate">
+
+      <mat-form-field>
+        <mat-label>Id</mat-label>
+        <input name="id" matInput [ngModel]="documentToEdit.id" readonly>
+      </mat-form-field>
+      <br>
+
+      <!--      <mat-form-field>-->
+      <!--        <mat-label>Original doc name</mat-label>-->
+      <!--        <input matInput [(ngModel)]="documentToEdit." disabled>-->
+      <!--      </mat-form-field>-->
+      <!--      <br>-->
+
+      <!--      <mat-form-field [style.width.px]="250">-->
+      <mat-form-field>
+        <mat-label>Original doc name</mat-label>
+        <input name="origName" matInput [ngModel]="documentToEdit.origName" readonly>
+      </mat-form-field>
+      <br>
+
+      <!--  TODO need list choice  -->
+      <!--            <mat-form-field>-->
+      <!--              <mat-label>Document original name</mat-label>-->
+      <!--              <input matInput [ngModel]="localData.documentType">-->
+      <!--            </mat-form-field>-->
+      <!--            <br>-->
+
+      <mat-form-field>
+        <mat-label>State</mat-label>
+        <mat-select name="docState" [ngModel]="documentToEdit.docState">
+          <mat-option value="{{state}}" *ngFor="let state of docStates">{{state}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+
+      <div class="card">
+
+        <div class="header">
+          <h2>Document configuration</h2>
+        </div>
+
+
+        <div class="card-body">
+          <!--      Doc-Configs-->
+          <mat-grid-list cols="2" rowHeight="2:1" ngModelGroup="docConfig">
+
+            <mat-grid-tile>
+              <mat-form-field>
+                <mat-label>High quality scanning</mat-label>
+                <mat-select name="highQuality" [ngModel]="documentToEdit.docConfig.highQuality.toString()">
+                  <mat-option value="false">False</mat-option>
+                  <mat-option value="true">True</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field>
+                <mat-label>Multipaged file</mat-label>
+                <mat-select name="multiPage" [ngModel]="documentToEdit.docConfig.multiPage.toString()">
+                  <mat-option value="false">False</mat-option>
+                  <mat-option value="true">True</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+
+              <mat-form-field>
+                <mat-label>Language</mat-label>
+                <mat-select name="lang" [ngModel]="documentToEdit.docConfig.lang.toString()">
+                  <mat-option value="{{language.key}}"
+                              *ngFor="let language of languagesMap | keyvalue">{{language.value}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field>
+                <mat-label>Scan immediately</mat-label>
+                <mat-select name="scanImmediately" [ngModel]="documentToEdit.docConfig.scanImmediately.toString()">
+                  <mat-option value="false">False</mat-option>
+                  <mat-option value="true">True</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+        </div>
+        <!--                <br>-->
+        <!--              </div>-->
+        <!--        </mat-card-content>-->
+        <!--      </mat-card>-->
+        <!--      </div>-->
+        <br>
+
+        <!--      <br>-->
+        <!--      <mat-form-field appearance="standard">-->
+        <!--        <mat-label>Input</mat-label>-->
+        <!--        <input placeholder="{{action}} Name1" matInput [(ngModel)]="localData.name">-->
+        <!--      </mat-form-field>-->
+        <!--      <br>-->
+        <!--      <mat-form-field appearance="standard">-->
+        <!--        <mat-label>Select</mat-label>-->
+        <!--        <mat-select>-->
+        <!--          <mat-option value="option">Option</mat-option>-->
+        <!--        </mat-select>-->
+        <!--      </mat-form-field>-->
+        <!--      <br>-->
+      </div>
+    </div>
+
+    <!-- Delete -->
+    <ng-template #elseTemplate>
+      <!--  TODO apply to delete row  -->
+      <!--  Send delete request .. deleted  -->
+      <!--  Request new page ...  -->
+      Sure to delete <b>{{localData.name}}</b>?
+    </ng-template>
+
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button type="button" mat-flat-button color="primary">{{action}}</button>
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+  </div>
+</form>
+<!--  </mat-card-content>-->
+<!--</mat-card>-->
