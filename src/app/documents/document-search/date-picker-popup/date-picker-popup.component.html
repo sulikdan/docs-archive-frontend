@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>{{dateDescriptionFrom}}</mat-label>
+      <input matInput [matDatepicker]="picker" (dateInput)="addEventFrom('input', $event)"
+             (dateChange)="addEventFrom('change', $event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>{{dateDescriptionTo}}</mat-label>
+      <input matInput [matDatepicker]="picker" (dateInput)="addEventTo('input', $event)"
+             (dateChange)="addEventTo('change', $event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="row" *ngIf="isCorrect">
+    <div class="col alert-warning">
+      Please select dates, where date-from is less than date-to.
+    </div>
+  </div>
+</div>
