@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Document} from '../shared/document.model';
 import {Page} from '../shared/page.model';
 import {SearchDocParams} from '../shared/search-doc-params.model';
@@ -10,49 +10,65 @@ import {Subject} from 'rxjs';
 })
 export class DocumentService {
 
+  languagesMap = new Map([
+    ['eng', 'English'],
+    ['svk', 'Slovak'],
+    ['czk', 'Czech']
+  ]);
+
+  docStatesList = ['WAITING_TO_SEND',
+    'MANUAL_SENDING',
+    'PROCESSING',
+    'SCANNED',
+    'RESOURCE_TO_CLEAN',
+    'COMPLETED'];
+
+  changableDocStatesList = ['WAITING_TO_SEND',
+    'MANUAL_SENDING',
+    'COMPLETED'];
+
+  docTypeList = [
+    'IMG',
+    'PDF'
+  ];
+
   newDataReceivedSubject: Subject<Page>;
 
   endpoint = 'http://localhost:8081/api/documents/';
 
   allDocumentList: Document[];
-  documentPages: [Document[]];
   currSearchDocParams: SearchDocParams;
 
   totalElements: number;
-  currPageSize = 5;
+  currPageSize = 1;
   currIndex = 0;
 
   constructor(private http: HttpClient) {
     this.allDocumentList = [];
-    this.documentPages = [[]];
     this.currSearchDocParams = new SearchDocParams();
     this.newDataReceivedSubject = new Subject<Page>();
   }
 
-  changePagesSize(pageSize: number) {
+  patchDocument(doc: Document, docInPageIndex: number) {
+    console.log('Doc values:', doc.toString());
+    // const headers = new HttpHeaders();
+    const realDoc = new Document();
+    realDoc.id = doc.id;
+    realDoc.origName = doc.origName;
+    realDoc.docType = doc.docType;
+    realDoc.createDateTime = doc.createDateTime;
+    realDoc.updateDateTime = doc.updateDateTime;
+    realDoc.asyncApiInfo = doc.asyncApiInfo;
+    realDoc.docState = doc.docState;
+    realDoc.docConfig = doc.docConfig;
+    // realDoc.tags = doc.tags;
+    realDoc.pages = doc.pages;
 
-    if (this.currPageSize === pageSize) {
-      return;
-    }
+    // headers.append('Content-type', 'application/json');
+    const body = {resource: JSON.stringify(realDoc)};
 
-    const newPageCount = this.allDocumentList.length / pageSize;
-
-    const rePagedDocLists: [Document[]] = [[]];
-    let pageDocList: Document[] = [];
-    for (let i = 0; i < this.allDocumentList.length; i++) {
-      pageDocList.push(this.allDocumentList[i]);
-      if (pageDocList.length % newPageCount === 0) {
-        rePagedDocLists.push(pageDocList);
-        pageDocList = [];
-      }
-    }
-
-    this.documentPages = rePagedDocLists;
-    this.currPageSize = pageSize;
-  }
-
-  patchDocument(doc: Document, docInPageIndex: number, pageIndex: number) {
-    return this.http.patch<Document>(this.endpoint + doc.id, doc);
+    // return this.http.patch<Document>(this.endpoint + doc.id, JSON.stringify(doc));
+    return this.http.patch<Document>(this.endpoint + realDoc.id, realDoc);
   }
 
   getDocument(id: string) {
@@ -63,57 +79,40 @@ export class DocumentService {
 
   }
 
+  deleteDocument(id: string) {
+    return this.http.delete(this.endpoint + id);
+  }
+
   getDocuments(pageIndex: number, pageSize: number) {
 
     // Object.assign([], myArray);
 
-    if (pageIndex === null && pageSize === null) {
+    if (pageIndex === 0 && pageSize === 0) {
       pageIndex = this.currIndex;
       pageSize = this.currPageSize;
+    } else if (pageSize === 0) {
+      pageSize = this.currPageSize = 1;
     } else {
       this.currIndex = pageIndex;
       this.currPageSize = pageSize;
     }
 
-    if ((pageIndex + 1) * pageSize <= this.allDocumentList.length) {
-      const pageData = new Page();
-      pageData.totalElements = this.totalElements;
-      pageData.content = [];
-
-      for (let i = pageIndex * pageSize; i < (pageIndex + 1) * pageSize; i++) {
-        if (i >= this.allDocumentList.length) {
-          break;
-        }
-        pageData.content.push(this.allDocumentList[i]);
-      }
-
-      pageData.size = pageData.content.length;
-      pageData.numberOfElements = pageData.content.length;
-      pageData.empty = pageData.content.length === 0;
-      pageData.first = pageIndex === 0;
-      // pageData.last = .fsaf.a. TODO
-
-
-      this.newDataReceivedSubject.next(pageData);
-      return;
-    }
-
     this.currSearchDocParams.pageIndex = pageIndex;
-    this.currSearchDocParams.pageSize = pageIndex;
+    this.currSearchDocParams.pageSize = pageSize;
 
     this.fetchDocuments(this.currSearchDocParams);
   }
 
   fetchDocuments(searchDocParams: SearchDocParams) {
-    const headers = new HttpHeaders();
-    headers.append('Content-type', 'application/json');
+    // const headers = new HttpHeaders();
+    // headers.append('Content-type', 'application/json');
 
     const data = {searchDocParams: JSON.stringify(searchDocParams)};
 
     console.log('Stringified data: ');
     console.log(JSON.stringify(searchDocParams));
 
-    this.http.get<Page>(this.endpoint, {params: data, headers}).subscribe((pageData: Page) => {
+    this.http.get<Page>(this.endpoint, {params: data}).subscribe((pageData: Page) => {
 
         console.log('working?', pageData);
         this.totalElements = pageData.totalElements;

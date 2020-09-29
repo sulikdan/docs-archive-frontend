@@ -1,0 +1,117 @@
+<div class="container-fluid">
+
+  <div class="row card-header mt-2 alert-primary justify-content-center">Here you can select files to upload</div>
+
+  <div class="card border-dark m-3"
+       [formGroup]="docBatches"
+       *ngFor="let docBatches of getControls(); let i = index"
+  >
+
+    <div class="row p-3 d-flex justify-content-center">
+
+      <!--Files selection-->
+      <div class="col">
+
+        <div class="row">
+          <div class="col">
+
+
+            <input class="btn btn- btn-outline-dark btn-sm float-left" type="file" id="file" multiple
+                   formControlName="file" (change)="onFileChange($event, i)">
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <div class="card-header">List of selected files:</div>
+          <ul class="list-group list-group-flush"
+              *ngFor="let file of filesSelected[i]">
+            <li class="list-group-item" *ngIf="file !== null">
+              {{ file.name }}
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!--Document config selection-->
+      <div class="col card p-1">
+
+        <!--            <div class="card-body">-->
+        <div class="card-header border-dark text-center">Upload settings</div>
+        <div class="card-body">
+          <div class="form-check">
+            <div class="col custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="highQualityCheck_{{i}}"
+                     formControlName="highQuality" value="false">
+              <label class="custom-control-label" for="highQualityCheck_{{i}}">High quality
+                scanning</label>
+            </div>
+          </div>
+
+          <div class="form-check">
+            <div class="col custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="scanImmediately_{{i}}"
+                     formControlName="scanImmediately" value="false">
+              <label class="custom-control-label" for="scanImmediately_{{i}}">Scan immediately</label>
+            </div>
+          </div>
+
+          <div class="form-check">
+            <div class="col custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="multipagedFile_{{i}}"
+                     formControlName="multipaged" value="false">
+              <label class="custom-control-label" for="multipagedFile_{{i}}">Multi-paged document</label>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-row">
+          <div class="col text-center">
+            <span>Document language:</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <select name="language" formControlName="language" class="custom-select">
+              <option value="{{language.key}}"
+                      *ngFor="let language of languagesMap | keyvalue">{{language.value}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row card-header mt-2 alert-warning justify-content-center" *ngIf="waitForLastBatchToBeFilled">Please add
+  files to already existing
+  batches!
+</div>
+
+<div class="row mt-4 alert alert-warning" *ngIf="isErrorUploading">
+  <div class="col">There was error, while uploading files. Try later again!</div>
+</div>
+
+<div class="row mt-4">
+  <div class="col align-content-end text-right">
+    <button class="btn btn-primary" type="button" (click)="onAddBatch()">
+      Add document batch
+    </button>
+  </div>
+
+  <div class="col">
+    <!--        <button class="btn btn-success" type="button" (click)="onSubmitDoc()">-->
+    <button class="btn btn-success" type="submit" (click)="onSubmitDocs()" *ngIf="!isSubmiting">
+      Submit
+    </button>
+
+    <button class="btn btn-success" disabled *ngIf="isSubmiting">
+      <span class="spinner-border spinner-border-sm"></span>
+      Uploading..
+    </button>
+  </div>
+</div>
+

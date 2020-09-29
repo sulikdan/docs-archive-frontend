@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'docs-archive-fe'`, () => {
+  it(`should have as title 'Master-Thesis-FE'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('docs-archive-fe');
+    expect(app.title).toEqual('Master-Thesis-FE');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('docs-archive-fe app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('Master-Thesis-FE app is running!');
   });
 });

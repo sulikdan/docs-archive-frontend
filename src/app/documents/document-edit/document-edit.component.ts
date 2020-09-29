@@ -16,6 +16,7 @@ export class DocumentEditComponent implements OnInit {
 
   languagesMap: Map<string, string>;
   docStates: string[];
+  docTypeList: string[];
 
   // documentFormGroup: FormGroup;
 
@@ -49,11 +50,29 @@ export class DocumentEditComponent implements OnInit {
 
     this.docStates = this.documentService.changableDocStatesList;
     this.languagesMap = this.documentService.languagesMap;
+    this.docTypeList = this.documentService.docTypeList;
   }
 
   doAction({value, valid}: { value: Document, valid: boolean }) {
-    console.log('Doing action', value, valid);
-    this.dialogRef.close({event: this.action, data: this.documentToEdit});
+    console.log('Doing action', value, valid, this.action);
+    if (this.action !== 'Delete') {
+      // this.documentToEdit.id = value.id;
+      // this.documentToEdit.origName = value.origName;
+      this.documentToEdit.docType = value.docType;
+      this.documentToEdit.docState = value.docState;
+      this.documentToEdit.docConfig.highQuality = value.docConfig.highQuality;
+      this.documentToEdit.docConfig.multiPage = value.docConfig.multiPage;
+      this.documentToEdit.docConfig.lang = value.docConfig.lang;
+      this.documentToEdit.docConfig.scanImmediately = value.docConfig.scanImmediately;
+
+      console.log('reassgined values: ', JSON.stringify(this.documentToEdit));
+      // TODO fill tags
+      // this.documentToEdit.tags = value.tags;
+
+      this.dialogRef.close({event: this.action, data: this.documentToEdit});
+    } else {
+      this.dialogRef.close({event: this.action, data: this.documentToEdit});
+    }
   }
 
   closeDialog() {

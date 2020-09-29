@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <div class="container-fluid">
+    <div class="navbar-brand">
+      <a routerLink="/" class="navbar-brand">Docs Archive</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+<!--      <div class="navbar-nav">-->
+<!--        <a class="nav-item nav-link" routerLink="/home">Home</a>-->
+<!--        <a class="nav-item nav-link" routerLink="/auth" *ngIf="!isAuthenticated">Authenticate</a>-->
+<!--        <a class="nav-item nav-link" routerLink="/documents" *ngIf="isAuthenticated">Documents</a>-->
+<!--        <a class="nav-item nav-link" routerLink="/import" *ngIf="isAuthenticated">Import</a>-->
+<!--      </div>-->
+      <ul class="nav navbar-nav nav-pills">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLinkActive="active" data-toggle="pill" routerLink="/home">Home</a>
+        </li>
+        <li  class="nav-item" routerLinkActive="active" *ngIf="!isAuthenticated">
+          <a class="nav-link" routerLinkActive="active" data-toggle="pill" routerLink="/auth">Authenticate</a>
+        </li>
+        <li  class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated">
+          <a class="nav-link" routerLinkActive="active" data-toggle="pill" routerLink="/documents">Documents</a>
+        </li>
+        <li  class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated">
+          <a class="nav-link" routerLinkActive="active" data-toggle="pill" routerLink="/import">Import</a>
+        </li>
+        <!--        <li routerLinkActive="active">-->
+        <!--          <a routerLink="/shopping-list">Shopping List</a>-->
+        <!--        </li>-->
+      </ul>
+
+      <div class="nav navbar-nav ml-auto">
+        <a class="nav-link" style="cursor: pointer;" (click)="onLogout()" *ngIf="isAuthenticated">Logout</a>
+      </div>
+
+
+<!--      <ul class="nav navbar-nav navbar-right">-->
+<!--        &lt;!&ndash;        <li *ngIf="isAuthenticated">&ndash;&gt;-->
+<!--        &lt;!&ndash;          <a style="cursor: pointer;" (click)="onLogout()">Logout</a>&ndash;&gt;-->
+<!--        &lt;!&ndash;          &lt;!&ndash;          <a style="cursor: pointer;" (click)="onLogout()">&ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;          &lt;!&ndash;            <button class="btn btn-default" (click)="onLogin()">Login</button>&ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;          &lt;!&ndash;          </a>&ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;          &lt;!&ndash;          <input class="inpu">&ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;          &lt;!&ndash;          <button class="btn btn-default pull-left" (click)="onLogin()">            Login          </button>&ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;          &lt;!&ndash;          <button class="btn btn-default pull-right" (click)="onRegister()">Register</button>          &ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;        </li>&ndash;&gt;-->
+<!--        <li *ngIf="isAuthenticated">-->
+<!--          <a style="cursor: pointer;" (click)="onLogout()">Logout</a>-->
+<!--        </li>-->
+<!--        <li class="dropdown" appDropdown *ngIf="isAuthenticated">-->
+<!--          <a style="cursor: pointer;" class="dropdown-toggle" role="button"-->
+<!--          >Manage <span class="caret"></span-->
+<!--          ></a>-->
+<!--          <ul class="dropdown-menu">-->
+<!--            <li>-->
+<!--              <a style="cursor: pointer;" (click)="onSaveData()">Save Data</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a style="cursor: pointer;" (click)="onFetchData()">Fetch Data</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </li>-->
+<!--      </ul>-->
+    </div>
+  </div>
+</nav>
