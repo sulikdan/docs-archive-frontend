@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Document} from '../shared/document.model';
-import {Page} from '../shared/page.model';
-import {SearchDocParams} from '../shared/search-doc-params.model';
+import {Document} from '../shared/models/document.model';
+import {Page} from '../shared/models/page.model';
+import {SearchDocParams} from '../shared/models/search-doc-params.model';
 import {Subject} from 'rxjs';
 
 @Injectable({
@@ -106,6 +106,15 @@ export class DocumentService {
   fetchDocuments(searchDocParams: SearchDocParams) {
     // const headers = new HttpHeaders();
     // headers.append('Content-type', 'application/json');
+
+    // console.log('Endpoint-Length:' + this.endpoint.length);
+    // const doc = new Document();
+    // const params = {searchDocParams: JSON.stringify(doc)};
+    // console.log('Search-doc_params:' + params.searchDocParams.length);
+    // console.log('Search-doc_params:' + params.toString().length);
+
+    // this.http.get<Page>(this.endpoint, {params}).subscribe(value => {
+    // });
 
     const data = {searchDocParams: JSON.stringify(searchDocParams)};
 

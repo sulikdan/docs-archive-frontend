@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SearchDocParams} from '../../shared/search-doc-params.model';
+import {SearchDocParams} from '../../shared/models/search-doc-params.model';
 import {Subscription} from 'rxjs';
 import {DocumentService} from '../document.service';
-import {Page} from '../../shared/page.model';
+import {Page} from '../../shared/models/page.model';
 
 @Component({
   selector: 'app-document-search',

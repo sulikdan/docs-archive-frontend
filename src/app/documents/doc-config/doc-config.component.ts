@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Document} from '../../shared/models/document.model';
 
 @Component({
-  selector: 'app-pages',
-  templateUrl: './pages.component.html',
-  styleUrls: ['./pages.component.scss']
+  selector: 'app-doc-config',
+  templateUrl: './doc-config.component.html',
+  styleUrls: ['./doc-config.component.scss']
 })
-export class PagesComponent implements OnInit {
+export class DocConfigComponent implements OnInit {
 
   @Input() row: Document;
 

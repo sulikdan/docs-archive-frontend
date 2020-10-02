@@ -27,10 +27,14 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {DatePickerPopupComponent} from './documents/document-search/date-picker-popup/date-picker-popup.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import {DatePipe} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {DocumentEditComponent} from './documents/document-edit/document-edit.component';
+import {DocExtendedViewComponent} from './documents/doc-extended-view/doc-extended-view.component';
+import { MessageComponent } from './shared/components/message/message.component';
+import {MessageService} from './shared/services/message.service';
+import {FileUploadService} from './import-documents/file-upload.service';
 
 @NgModule({
   declarations: [
@@ -47,12 +51,18 @@ import {DocumentEditComponent} from './documents/document-edit/document-edit.com
     StringToDatePipe,
     DocumentSearchComponent,
     DatePickerPopupComponent,
-    DocumentEditComponent
+    DocumentEditComponent,
+    DocExtendedViewComponent,
+    MessageComponent
+  ],
+  exports:[
+    MessageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
 
@@ -71,6 +81,8 @@ import {DocumentEditComponent} from './documents/document-edit/document-edit.com
   ],
   providers: [
     Document,
+    MessageService,
+    FileUploadService,
     DatePipe
   ],
   bootstrap: [AppComponent]

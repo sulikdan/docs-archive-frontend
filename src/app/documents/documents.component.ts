@@ -4,13 +4,15 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Document} from '../shared/document.model';
+import {Document} from '../shared/models/document.model';
 import {Subscription} from 'rxjs';
-import {Page} from '../shared/page.model';
+import {Page} from '../shared/models/page.model';
+import {DocPage} from '../shared/models/doc-page.model';
 
 // import {DialogBoxComponent} from './dialog-box/dialog-box.component';
 import {MatDialog} from '@angular/material/dialog';
 import {DocumentEditComponent} from './document-edit/document-edit.component';
+import {MessageService} from '../shared/services/message.service';
 
 
 @Component({
@@ -53,7 +55,7 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private documentService: DocumentService, public dialog: MatDialog) {
+  constructor(private documentService: DocumentService, public dialog: MatDialog, private messageService: MessageService) {
   }
 
   ngOnInit(): void {
@@ -106,6 +108,10 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.loadingIndicator = false;
               }, 9500);
             });
+          }, error => {
+            this.messageService.error('Unexpected error occurred, while trying to update provided changes.');
+          }, () => {
+            this.messageService.success('The document was successfully updated.');
           }
         );
       } else if (result.event === 'Delete') {
@@ -118,6 +124,12 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.loadingIndicator = false;
               }, 9500);
             });
+          },
+          error => {
+            this.messageService.error('Unexpected error occurred, while trying to delete document.');
+          },
+          () => {
+            this.messageService.success('The document was successfully deleted.');
           }
         );
       }

@@ -1,0 +1,23 @@
+<div class="card border-dark mt-2">
+  <h4 class="card-header card-title text-center">Async api info</h4>
+  <div class="card-body">
+    <table class="table table-bordered table-striped">
+      <tbody>
+      <tr>
+        <th>Document process status</th>
+        <th>{{ row.asyncApiInfo.documentProcessStatus }}</th>
+      </tr>
+
+      <tr>
+        <th>Document ocr status</th>
+        <th>{{ row.asyncApiInfo.currentStatusLink }}</th>
+      </tr>
+
+      <tr>
+        <th>Document ocr result link</th>
+        <th>{{ row.asyncApiInfo.resultLink }}</th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

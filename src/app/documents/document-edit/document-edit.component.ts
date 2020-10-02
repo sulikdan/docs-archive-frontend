@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DocumentService} from '../document.service';
-import {Document} from '../../shared/document.model';
+import {Document} from '../../shared/models/document.model';
 
 @Component({
   selector: 'app-document-edit',
@@ -32,21 +32,6 @@ export class DocumentEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.documentFormGroup = new FormGroup({
-    //     id: new FormControl({value: this.documentToEdit.id, disabled: true}), // disabled
-    //     origName: new FormControl({value: this.documentToEdit.id, disabled: true}), // disabled
-    //     documentType: new FormControl({value: this.documentToEdit.documentType}),
-    //     createDateTime: new FormControl(), // invisible
-    //     updateDateTime: new FormControl(), // invisible
-    //     docState: new FormControl(),
-    //     docConfig: new FormGroup({
-    //       highQuality: new FormControl(),
-    //       multiPage: new FormControl(),
-    //       lang: new FormControl(),
-    //       scanImmediately: new FormControl()
-    //     })
-    //   }
-    // );
 
     this.docStates = this.documentService.changableDocStatesList;
     this.languagesMap = this.documentService.languagesMap;
@@ -55,7 +40,7 @@ export class DocumentEditComponent implements OnInit {
 
   doAction({value, valid}: { value: Document, valid: boolean }) {
     console.log('Doing action', value, valid, this.action);
-    if (this.action !== 'Delete') {
+    if (this.action === 'Update') {
       // this.documentToEdit.id = value.id;
       // this.documentToEdit.origName = value.origName;
       this.documentToEdit.docType = value.docType;

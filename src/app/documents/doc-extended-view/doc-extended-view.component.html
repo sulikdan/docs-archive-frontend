@@ -1,0 +1,62 @@
+<table class="table table-hover text-center">
+  <thead>
+  <tr>
+    <th scope="col" colspan="2" >Extended view</th>
+<!--    <th scope="col">First</th>-->
+<!--    <th scope="col">Last</th>-->
+<!--    <th cope="col">Handle</th>-->
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th scope="row">Id</th>
+    <td>{{row.id}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Original name</th>
+    <td>{{row.origName}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Document type</th>
+    <td>{{row.docType}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Document state</th>
+    <td>{{row.docState}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Date of creation</th>
+    <td>{{row.createDateTime}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Date of the last upadte</th>
+    <td>{{row.updateDateTime}}</td>
+  </tr>
+  </tbody>
+</table>
+
+<table class="table table-hover text-center">
+  <thead>
+  <tr>
+    <th scope="col" colspan="2" >Document configuration</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th scope="row">High scan quality</th>
+    <td>{{row.docConfig.highQuality}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Multi-page document</th>
+    <td>{{row.docConfig.multiPage}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Language</th>
+    <td>{{row.docConfig.lang}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Scan immediately</th>
+    <td>{{row.docConfig.scanImmediately}}</td>
+  </tr>
+  </tbody>
+</table>
