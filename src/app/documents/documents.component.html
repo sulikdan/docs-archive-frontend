@@ -48,11 +48,13 @@
           <div style="padding-left:25px;">
 
             <!--            <app-async-api-info [row]="element" *ngIf="element.asyncApiInfo !== null"></app-async-api-info>-->
-            <p>Yolo</p>
+<!--            <p>Yolo</p>-->
 
-            <app-doc-config [row]="element" *ngIf="element.docConfig !== null"></app-doc-config>
+            <!--            <app-doc-config [row]="element" *ngIf="element.docConfig !== null"></app-doc-config>-->
 
-            <app-pages [row]="element" *ngIf="element.pages !== null"></app-pages>
+            <app-doc-extended-view [row]="element" *ngIf="element !== null"></app-doc-extended-view>
+
+<!--            <app-pages [row]="element" *ngIf="element.pages !== null"></app-pages>-->
 
           </div>
         </div>
