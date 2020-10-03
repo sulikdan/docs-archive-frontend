@@ -8,8 +8,6 @@ import {Document} from '../shared/models/document.model';
 import {Subscription} from 'rxjs';
 import {Page} from '../shared/models/page.model';
 import {DocPage} from '../shared/models/doc-page.model';
-
-// import {DialogBoxComponent} from './dialog-box/dialog-box.component';
 import {MatDialog} from '@angular/material/dialog';
 import {DocumentEditComponent} from './document-edit/document-edit.component';
 import {MessageService} from '../shared/services/message.service';

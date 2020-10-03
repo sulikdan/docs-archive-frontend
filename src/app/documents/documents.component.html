@@ -1,4 +1,5 @@
 <!-- Custom search to server -->
+
 <app-document-search></app-document-search>
 
 
@@ -10,12 +11,12 @@
   <!--  </div>-->
 
 
-  <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+  <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
     <!--  Columns  -->
     <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
-      <td mat-cell *matCellDef="let element">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </mat-header-cell>
+      <mat-cell *matCellDef="let element">
         <div *ngIf="column === 'action'" class="action-link">
           <a (click)="openDialog('Update',element)">Edit</a> |
           <a (click)="openDialog('Delete',element)">Delete</a>
@@ -26,7 +27,7 @@
         <div *ngIf="column !== 'documentProcessStatus' && column !== 'action'">
           {{element[column]}}
         </div>
-      </td>
+      </mat-cell>
     </ng-container>
 
     <!--    &lt;!&ndash; Action Column &ndash;&gt;-->
@@ -41,7 +42,7 @@
 
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+      <mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
         <div class="example-element-detail"
              [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
 
@@ -54,24 +55,24 @@
 
             <app-doc-extended-view [row]="element" *ngIf="element !== null"></app-doc-extended-view>
 
-<!--            <app-pages [row]="element" *ngIf="element.pages !== null"></app-pages>-->
+            <app-pages [row]="element" *ngIf="element.pages !== null"></app-pages>
 
           </div>
         </div>
-      </td>
+      </mat-cell>
     </ng-container>
 
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns; "
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns; "
         class="example-element-row"
         [class.example-expanded-row]="expandedElement === element"
         (click)="expandedElement = expandedElement === element ? null : element">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
+    </mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></mat-row>
     <!--    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="example-detail-row"></tr>-->
     <!--    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>-->
-  </table>
+  </mat-table>
 
   <mat-paginator [pageSizeOptions]="[1, 2 ,5, 10, 20]"
                  [length]="totalSize"
