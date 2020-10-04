@@ -1,147 +1,155 @@
-<div class="container-fluid p-0 pt-3">
-  <form>
-    <div class="row justify-content-center text-center">
+<div class="card shadow-lg shadow rounded mt-3">
+  <div class="card-body">
 
-      <div class="col-2">
+    <div class="container-fluid p-0 pt-3">
+      <form>
+        <div class="row justify-content-center text-center">
+
+          <div class="col-2">
 
 
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">{{searchOptionDropDown}}</button>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">{{searchOptionDropDown}}</button>
 
-          <div class="dropdown-menu">
-            <a class="dropdown-item" (click)="onSearchOptionSelect(option)"
-               *ngFor="let option of searchOptions">{{option}}</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="onSearchOptionSelect(option)"
+                   *ngFor="let option of searchOptions">{{option}}</a>
+              </div>
+            </div>
+
+          </div>
+
+          <!--  Default  -->
+          <div class="col-5" *ngIf="clickedSearchOption === null">
+            <input type="text" class="form-control" id="inlineFormInputName" disabled
+                   placeholder="Please select a search option">
+          </div>
+
+          <!--  Id  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[0]">
+            <!--    <div class="col-sm-3 my-1">-->
+            <!--      <label class="sr-only" for="inlineFormInputName">Name</label>-->
+            <!--        <input type="text" class="form-control" id="shit" placeholder="Document id">-->
+            <input type="text" class="form-control" id="{{searchOptions[0]}}" placeholder="Document id"
+                   (keyup.enter)="onAddClick($event)">
+
+            <!--    </div>-->
+          </div>
+
+          <!--  Text  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[1]">
+            <input type="text" class="form-control" id="{{searchOptions[1]}}" placeholder="Text in document"
+                   (keyup.enter)="onAddClick($event)"
+            >
+          </div>
+
+          <!--  State  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[2]">
+            <select name="state" class="custom-select" id="{{searchOptions[2]}}" (keyup.enter)="onAddClick($event)">
+              <option selected>Select your document state</option>
+              <option *ngFor="let docState of docStates">{{docState}}</option>
+            </select>
+          </div>
+
+          <!--  Language  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[3]">
+            <select name="language" class="custom-select" id="{{searchOptions[3]}}" (keyup.enter)="onAddClick($event)">
+              <option selected>Select your document language</option>
+              <option *ngFor="let language of languages">{{language}}</option>
+            </select>
+          </div>
+
+          <!--  Text-Regex  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[4]">
+            <input type="text" class="form-control" id="{{searchOptions[4]}}" placeholder="Regex for searched text">
+          </div>
+
+          <!--  Created-date  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[5]">
+            <app-date-picker-popup (selectedDateFrom)="searchDocParams.createdFrom = $event"
+                                   (selectedDateTo)="searchDocParams.createdTo = $event"
+                                   dateDescriptionFrom="Date from" dateDescriptionTo="Date to"></app-date-picker-popup>
+          </div>
+
+          <!--  Updated-date  -->
+          <div class="col-5" *ngIf="clickedSearchOption === searchOptions[6]">
+            <app-date-picker-popup (selectedDateFrom)="searchDocParams.updatedFrom = $event"
+                                   (selectedDateTo)="searchDocParams.updatedTo = $event"
+                                   dateDescriptionFrom="Date from" dateDescriptionTo="Date to"></app-date-picker-popup>
+          </div>
+
+
+          <!--  Button Add  -->
+          <div class="col-1 text-center">
+            <button class="btn btn-primary" type="button" (click)="onAddClick($event)">
+              Add
+            </button>
+          </div>
+
+          <!-- Buttons Search -->
+          <div class="col-2 text-center">
+            <button class="btn btn-success" type="button" (click)="onSearchClick()" *ngIf="!isSearching">
+              Search
+            </button>
+
+            <button class="btn btn-success" disabled *ngIf="isSearching">
+              <span class="spinner-border spinner-border-sm"></span>
+              Searching..
+            </button>
+          </div>
+
+          <!--  Reset  -->
+          <div class="col-1 text-center">
+            <button class="btn btn-danger" type="button" (click)="onResetClick()">
+              Reset
+            </button>
+          </div>
+
+        </div>
+      </form>
+
+      <div class="row justify-content-center text-center mt-3 d-flex">
+
+        <div class="col">
+          <div class="card-title">Ids</div>
+          <div *ngFor="let selectedId of searchDocParams.ids; let i = index;"
+               (click)="removeItemFromIds(i)" class="d-block mt-2">
+            <a class="badge badge-pill badge-light" href="javascript:void(0)">{{selectedId}}</a>
           </div>
         </div>
 
+        <div class="col">
+          <div class="card-title">Text</div>
+          <div (click)="removeItemFromText(i)" class="d-block mt-2"
+               *ngFor="let text of searchDocParams.searchedText; let i = index;">
+            <a class="badge badge-pill badge-light" href="javascript:void(0)">{{text}}</a>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card-title">States</div>
+          <div (click)="removeItemFromStates(i)" class="d-block mt-2"
+               *ngFor="let state of searchDocParams.states; let i = index;">
+            <a class="badge badge-pill badge-light" href="javascript:void(0)">{{state}}</a>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card-title">Language</div>
+          <div (click)="removeItemFromLanguages(i)" class="d-block mt-2"
+               *ngFor="let language of searchDocParams.languages; let i = index;">
+            <a class="badge badge-pill badge-light" href="javascript:void(0)">{{language}}</a>
+          </div>
+        </div>
+
+
       </div>
 
-      <!--  Default  -->
-      <div class="col-5" *ngIf="clickedSearchOption === null">
-        <input type="text" class="form-control" id="inlineFormInputName" disabled
-               placeholder="Please select a search option">
-      </div>
-
-      <!--  Id  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[0]">
-        <!--    <div class="col-sm-3 my-1">-->
-        <!--      <label class="sr-only" for="inlineFormInputName">Name</label>-->
-        <!--        <input type="text" class="form-control" id="shit" placeholder="Document id">-->
-        <input type="text" class="form-control" id="{{searchOptions[0]}}" placeholder="Document id"
-               (keyup.enter)="onAddClick($event)">
-
-        <!--    </div>-->
-      </div>
-
-      <!--  Text  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[1]">
-        <input type="text" class="form-control" id="{{searchOptions[1]}}" placeholder="Text in document"
-               (keyup.enter)="onAddClick($event)"
-        >
-      </div>
-
-      <!--  State  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[2]">
-        <select name="state" class="custom-select" id="{{searchOptions[2]}}" (keyup.enter)="onAddClick($event)">
-          <option selected>Select your document state</option>
-          <option *ngFor="let docState of docStates">{{docState}}</option>
-        </select>
-      </div>
-
-      <!--  Language  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[3]">
-        <select name="language" class="custom-select" id="{{searchOptions[3]}}" (keyup.enter)="onAddClick($event)">
-          <option selected>Select your document language</option>
-          <option *ngFor="let language of languages">{{language}}</option>
-        </select>
-      </div>
-
-      <!--  Text-Regex  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[4]">
-        <input type="text" class="form-control" id="{{searchOptions[4]}}" placeholder="Regex for searched text">
-      </div>
-
-      <!--  Created-date  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[5]">
-        <app-date-picker-popup (selectedDateFrom)="searchDocParams.createdFrom = $event"
-                               (selectedDateTo)="searchDocParams.createdTo = $event"
-                               dateDescriptionFrom="Date from" dateDescriptionTo="Date to"></app-date-picker-popup>
-      </div>
-
-      <!--  Updated-date  -->
-      <div class="col-5" *ngIf="clickedSearchOption === searchOptions[6]">
-        <app-date-picker-popup (selectedDateFrom)="searchDocParams.updatedFrom = $event"
-                               (selectedDateTo)="searchDocParams.updatedTo = $event"
-                               dateDescriptionFrom="Date from" dateDescriptionTo="Date to"></app-date-picker-popup>
-      </div>
-
-
-      <!--  Button Add  -->
-      <div class="col-1 text-center">
-        <button class="btn btn-primary" type="button" (click)="onAddClick($event)">
-          Add
-        </button>
-      </div>
-
-      <!-- Buttons Search -->
-      <div class="col-2 text-center">
-        <button class="btn btn-success" type="button" (click)="onSearchClick()" *ngIf="!isSearching">
-          Search
-        </button>
-
-        <button class="btn btn-success" disabled *ngIf="isSearching">
-          <span class="spinner-border spinner-border-sm"></span>
-          Searching..
-        </button>
-      </div>
-
-      <!--  Reset  -->
-      <div class="col-1 text-center">
-        <button class="btn btn-danger" type="button" (click)="onResetClick()">
-          Reset
-        </button>
-      </div>
 
     </div>
-  </form>
-
-  <div class="row justify-content-center text-center mt-3">
-
-    <div class="col">
-      <div class="card-title">Ids</div>
-      <div *ngFor="let selectedId of searchDocParams.ids; let i = index;"
-           (click)="removeItemFromIds(i)" class="d-block mt-2">
-        <a class="badge badge-pill badge-light" href="javascript:void(0)">{{selectedId}}</a>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card-title">Text</div>
-      <div (click)="removeItemFromText(i)" class="d-block mt-2"
-           *ngFor="let text of searchDocParams.searchedText; let i = index;">
-        <a class="badge badge-pill badge-light" href="javascript:void(0)">{{text}}</a>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card-title">States</div>
-      <div (click)="removeItemFromStates(i)" class="d-block mt-2"
-           *ngFor="let state of searchDocParams.states; let i = index;">
-        <a class="badge badge-pill badge-light" href="javascript:void(0)">{{state}}</a>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card-title">Language</div>
-      <div (click)="removeItemFromLanguages(i)" class="d-block mt-2"
-           *ngFor="let language of searchDocParams.languages; let i = index;">
-        <a class="badge badge-pill badge-light" href="javascript:void(0)">{{language}}</a>
-      </div>
-    </div>
-
-
   </div>
-
-
+  <div class="card-body">
+    asfagf
+  </div>
 </div>
