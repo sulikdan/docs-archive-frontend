@@ -17,7 +17,7 @@
 #COPY --from=compile-image /opt/ng/dist/app-name /usr/share/nginx/html
 # Stage 1
 
-FROM node:15.0.1-alpine as build-step
+FROM node:15.0.1-alpine3.12 as build-step
 
 
 RUN mkdir -p /app
