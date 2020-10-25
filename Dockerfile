@@ -24,7 +24,7 @@ RUN mkdir -p /app
 
 WORKDIR /app
 COPY package.json /app
-#RUN npm install -g npm@7.0.5
+
 RUN npm install
 COPY . /app
 RUN npm run build --prod
@@ -35,7 +35,5 @@ RUN npm run build --prod
 # Stage 2
 
 FROM nginx:1.19.3-alpine
-
-COPY --from=build-step /app/docs /usr/share/nginx/html
-
+COPY --from=build-step /app/dist/docs-archive-fe /usr/share/nginx/html
 
