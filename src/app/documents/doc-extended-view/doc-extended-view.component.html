@@ -1,0 +1,78 @@
+<div class="card">
+  <div class="card-header text-center">
+    <b>Additional document details</b>
+  </div>
+
+  <div class="card-body">
+    <div class="content">
+      <table class="table table-hover text-center">
+<!--        <thead>-->
+<!--        <tr>-->
+<!--          <th scope="col" colspan="2">Extended view</th>-->
+<!--          &lt;!&ndash;    <th scope="col">First</th>&ndash;&gt;-->
+<!--          &lt;!&ndash;    <th scope="col">Last</th>&ndash;&gt;-->
+<!--          &lt;!&ndash;    <th cope="col">Handle</th>&ndash;&gt;-->
+<!--        </tr>-->
+<!--        </thead>-->
+        <tbody>
+        <tr>
+          <th scope="row">Id</th>
+          <td>{{row.id}}</td>
+        </tr>
+        <tr *ngIf="showOrigName">
+          <th scope="row">Original name</th>
+          <td>{{row.origName}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Document type</th>
+          <td>{{row.docType}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Document state</th>
+          <td>{{row.docState}}</td>
+        </tr>
+        <tr *ngIf="showCreationDate">
+          <th scope="row">Date of creation</th>
+          <td>{{row.createDateTime}}</td>
+        </tr>
+        <tr *ngIf="showUpdateDate">
+          <th scope="row">Date of the last update</th>
+          <td>{{row.updateDateTime}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <br>
+
+      <table class="table table-hover text-center">
+        <thead>
+        <tr>
+          <th scope="col" colspan="2" class="">
+            <h3>
+              <b>Document configuration</b>
+            </h3>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">High scan quality</th>
+          <td>{{row.docConfig.highQuality.toString() | titlecase}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Multi-page document</th>
+          <td>{{row.docConfig.multiPage.toString() | titlecase}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Language</th>
+          <td>{{this.languageMap.get(row.docConfig.lang)}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Scan immediately</th>
+          <td>{{row.docConfig.scanImmediately.toString() | titlecase}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

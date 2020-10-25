@@ -1,0 +1,24 @@
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalMessage">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <h1 class="display-3" [ngSwitch]="message.type">
+          <i *ngSwitchCase="'info'" class="fa fa-3x fa-info-circle text-primary"></i>
+          <i *ngSwitchCase="'error'" class="fa fa-3x fa-exclamation-circle text-danger"></i>
+          <i *ngSwitchCase="'warning'" class="fa fa-3x fa-exclamation-triangle text-warning"></i>
+          <i *ngSwitchCase="'success'" class="fa fa-3x fa-check text-success"></i>
+          <i *ngSwitchCase="'failure'" class="fa fa-3x fa-times text-danger"></i>
+        </h1>
+        <h4>{{message.text}}</h4>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-dimiss="modal" (click)="hideModal()">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>

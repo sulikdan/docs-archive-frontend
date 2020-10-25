@@ -17,7 +17,7 @@ export class Page {
 
 
   constructor() {
-    this.content = []
+    this.content = [];
     this.totalElements = 0;
     // this.totalPages = totalPages;
     this.size = 0;

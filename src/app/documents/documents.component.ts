@@ -1,16 +1,15 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DocumentService} from './document.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Document} from '../shared/document.model';
+import {Document} from '../shared/models/document.model';
 import {Subscription} from 'rxjs';
-import {Page} from '../shared/page.model';
-
-// import {DialogBoxComponent} from './dialog-box/dialog-box.component';
+import {Page} from '../shared/models/page.model';
 import {MatDialog} from '@angular/material/dialog';
 import {DocumentEditComponent} from './document-edit/document-edit.component';
+import {MessageService} from '../shared/services/message.service';
 
 
 @Component({
@@ -24,17 +23,10 @@ import {DocumentEditComponent} from './document-edit/document-edit.component';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  // encapsulation: ViewEncapsulation.None,
 })
 export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // NEW
-  // data: Document[] = [];
-
-  resultsLength = 0;
-  // isLoadingResults = false;
-
-
-  // OLD
   newDataSub: Subscription;
 
   pageSize: number;
@@ -46,19 +38,31 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
   loadingIndicator = false;
   expandedElement: Document | null;
   // https://www.freakyjolly.com/angular-material-table-operations-using-dialog/
-  displayedColumns = ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus', 'action'];
+  displayedColumnsOriginal = ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus', 'action'];
+  displayedColumnsChoices = [
+    ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus', 'action'],
+    ['id', 'origName', 'createDateTime', 'documentProcessStatus', 'action'],
+    ['id', 'origName', 'documentProcessStatus', 'action'],
+    ['id', 'documentProcessStatus', 'action']
+  ];
+  displayedColumnsCurrent = [];
 
   dataSource: MatTableDataSource<Document> = new MatTableDataSource<Document>();
+
+  showUpdateDate = false;
+  showCreationDate = false;
+  showOrigName = false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private documentService: DocumentService, public dialog: MatDialog) {
+  constructor(private documentService: DocumentService, public dialog: MatDialog, private messageService: MessageService) {
   }
 
   ngOnInit(): void {
-    this.pageSize = 5;
+    this.pageSize = 10;
     this.pageIndex = 0;
+    this.displayedColumnsCurrent = this.displayedColumnsChoices[0];
   }
 
   ngAfterViewInit() {
@@ -80,7 +84,7 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
 
-    this.fetchDocuments(data => {
+    this.fetchDocuments(() => {
       setTimeout(() => {
         this.loadingIndicator = false;
       }, 1500);
@@ -96,16 +100,21 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.event === 'Update') {
-        const documentToUpdate = result.data as Document ;
-        console.log(result, '\n', result.data);
+        const documentToUpdate = result.data as Document;
+        console.log('Dunno', result, '\n', result.data);
         this.documentService.patchDocument(documentToUpdate, this.pageIndex).subscribe(
-          value => {
+          () => {
             this.loadingIndicator = true;
-            this.fetchDocuments(data => {
+            this.fetchDocuments(() => {
               setTimeout(() => {
                 this.loadingIndicator = false;
               }, 9500);
             });
+          }, error => {
+            console.log('Error while patching:', error);
+            this.messageService.error('Unexpected error occurred, while trying to update provided changes.');
+          }, () => {
+            this.messageService.success('The document was successfully updated.');
           }
         );
       } else if (result.event === 'Delete') {
@@ -118,29 +127,16 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.loadingIndicator = false;
               }, 9500);
             });
+          },
+          () => {
+            this.messageService.error('Unexpected error occurred, while trying to delete document.');
+          },
+          () => {
+            this.messageService.success('The document was successfully deleted.');
           }
         );
       }
     });
-  }
-
-  updateRowData(rowObj) {
-    this.documents = this.documents.filter((value, key) => {
-      if (value.id === rowObj.id) {
-        value.origName = rowObj.name;
-      }
-      return true;
-    });
-  }
-
-  deleteRowData(rowObj) {
-    this.documents = this.documents.filter((value, key) => {
-      return value.id !== rowObj.id;
-    });
-  }
-
-  send(row: any) {
-
   }
 
   getServerData(event?: PageEvent) {
@@ -169,6 +165,48 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.newDataSub.unsubscribe();
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    console.log('Inner width: ' + event.target.innerWidth);
+
+    // Hiding update date
+    if (event.target.innerWidth < 950) {
+      this.showUpdateDate = true;
+    } else {
+      this.showUpdateDate = false;
+    }
+
+    // Hiding creation date
+    if (event.target.innerWidth < 700) {
+      this.showCreationDate = true;
+    } else {
+      this.showCreationDate = false;
+    }
+
+    // Hiding origName
+    if (event.target.innerWidth < 500) {
+      this.showOrigName = true;
+    } else {
+      this.showOrigName = false;
+    }
+
+    // show Column instead in special settigns
+    if (this.showOrigName) {
+      this.displayedColumnsCurrent = this.displayedColumnsChoices[3];
+    } else if (this.showCreationDate) {
+      this.displayedColumnsCurrent = this.displayedColumnsChoices[2];
+    } else if (this.showUpdateDate) {
+      this.displayedColumnsCurrent = this.displayedColumnsChoices[1];
+    } else {
+      this.displayedColumnsCurrent = this.displayedColumnsChoices[0];
+    }
+
+
+    console.log('Settings: ', this.showOrigName, this.showCreationDate, this.showUpdateDate);
+    console.log('displaying : ', this.displayedColumnsCurrent.toString());
   }
 
 }

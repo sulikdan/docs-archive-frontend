@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FileUploadService} from './file-upload.service';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
-import {DocConfig} from '../shared/doc-config.model';
+import {DocConfig} from '../shared/models/doc-config.model';
 import {DocumentService} from '../documents/document.service';
+import {MessageService} from '../shared/services/message.service';
 
 @Component({
   selector: 'app-import-documents', templateUrl: './import-documents.component.html'
@@ -23,7 +24,8 @@ export class ImportDocumentsComponent implements OnInit {
 
   docBatches: FormArray;
 
-  constructor(private fileUploadService: FileUploadService, private documentService: DocumentService) {
+  constructor(private fileUploadService: FileUploadService, private documentService: DocumentService,
+              private messageService: MessageService) {
   }
 
 
@@ -84,6 +86,7 @@ export class ImportDocumentsComponent implements OnInit {
             console.log('Error happend:', error);
             this.isErrorUploading = true;
             this.isSubmiting = false;
+            this.messageService.error('Unexpected error occured, while trying to upload documents.');
 
             setTimeout(() => {
               this.isErrorUploading = false;
@@ -92,6 +95,7 @@ export class ImportDocumentsComponent implements OnInit {
           }, () => {
             console.log('Uploaded complete!');
             this.isSubmiting = false;
+            this.messageService.success('Document/s uploading was successful.');
           }
         );
 

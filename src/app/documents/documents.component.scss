@@ -1,10 +1,9 @@
-table {
-  width: 100%;
-}
-
-th.mat-sort-header-sorted {
-  color: black;
-}
+//.example-container {
+//  display: flex;
+//  flex-direction: column;
+//  //min-height: px;
+//  min-width: 550px;
+//}
 
 table {
   width: 100%;
@@ -52,17 +51,4 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-description-attribution {
   opacity: 0.5;
-}
-
-.example-loading-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

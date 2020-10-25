@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {DocConfig} from '../shared/doc-config.model';
+import {DocConfig} from '../shared/models/doc-config.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class FileUploadService {
   }
 
   postFile(filesToUpload: File[], docConfig: DocConfig): Observable<Document> {
-    const endpoint = 'http://localhost:8081/api/documents/';
+    const endpoint = 'http://localhost:8085/api/documents/';
 
     const formData: FormData = new FormData();
     for (const file of filesToUpload) {

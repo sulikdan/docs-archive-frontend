@@ -1,0 +1,28 @@
+<div class="card border-dark mt-2">
+  <h4 class="card-header card-title text-center">Document configuration</h4>
+  <div class="card-body">
+    <table class="table table-bordered table-striped">
+      <tbody>
+      <tr>
+        <th>High quality scanning</th>
+        <th>{{ row.docConfig.highQuality }}</th>
+      </tr>
+
+      <tr>
+        <th>Multi-paged file</th>
+        <th>{{ row.docConfig.multiPage }}</th>
+      </tr>
+
+      <tr>
+        <th>Language</th>
+        <th>{{ row.docConfig.lang }}</th>
+      </tr>
+
+      <tr>
+        <th>Scan immediately</th>
+        <th>{{ row.docConfig.scanImmediately }}</th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

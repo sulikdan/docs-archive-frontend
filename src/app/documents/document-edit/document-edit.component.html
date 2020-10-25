@@ -5,7 +5,7 @@
 <h1 mat-dialog-title class="text-center" *ngIf="action === 'Delete'"><strong>Delete document</strong></h1>
 <!--  </mat-card-title>-->
 <!--  <mat-card-content>-->
-<form #documentForm="ngForm" (ngSubmit)="doAction(documentForm)">
+<form #documentForm="ngForm">
 
 
   <div mat-dialog-content>
@@ -43,7 +43,7 @@
         <div class="col">
           <mat-form-field>
             <mat-label>Document type</mat-label>
-            <mat-select name="documentType" [ngModel]="documentToEdit.docType">
+            <mat-select name="docType" [ngModel]="documentToEdit.docType">
               <mat-option value="{{docType}}" *ngFor="let docType of docTypeList">{{docType}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -62,6 +62,7 @@
 
         <div class="card-body" ngModelGroup="docConfig">
           <!--      Doc-Configs-->
+          <!--    Configs 2      -->
           <div class="row">
 
             <div class="col">
@@ -86,6 +87,7 @@
 
           </div>
 
+          <!--    Configs 2      -->
           <div class="row">
 
             <div class="col">
@@ -111,16 +113,72 @@
           </div>
 
         </div>
-        <br>
+        <!--        <br>-->
 
       </div>
+      <br>
+      <br>
+
+      <div class="row">
+        <!--  Text  -->
+        <div class="col-7 col-sm-8">
+          <input type="text" class="form-control" id="newTags" placeholder="Tag for document"
+                 (keyup.enter)="onAddClick($event)">
+        </div>
+        <div class="col-5 col-sm-4">
+          <!--  Button Add  -->
+          <div class="text-center ml-3">
+            <button class="btn btn-primary" type="button" (click)="onAddClick($event)">
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <!--    Adding tags      -->
+      <div class="row">
+        <div class="col card shadow" style="min-width: 225px;">
+          <div class="card-header text-center">
+            <b>Existing Tags</b>
+          </div>
+          <div class="card-body text-center">
+            <div (click)="removeItemFromCurrentTags(i)" class="d-block mt-1 mb-1"
+                 *ngFor="let tag of documentToEdit.tags; let i = index;">
+              <a class="badge badge-pill badge-light" style="font-size: 0.8rem;" href="javascript:void(0)">{{tag}}</a>
+            </div>
+            <span class="text-secondary"
+                  *ngIf="documentToEdit.tags === null || documentToEdit.tags.length === 0"> - None tag
+              selected -
+            </span>
+          </div>
+        </div>
+
+        <div class="col card shadow" style="min-width: 225px;">
+          <div class="card-header text-center">
+            <b>New Tags</b>
+          </div>
+          <div class="card-body text-center">
+            <div (click)="removeItemFromNewTags(i)" class="d-block mt-1 mb-1"
+                 *ngFor="let tag of additionalTags; let i = index;">
+              <a class="badge badge-pill badge-light" style="font-size: 0.8rem;"
+                 href="javascript:void(0)">{{tag.toString()}}</a>
+            </div>
+            <span class="text-secondary"
+                  *ngIf="additionalTags === null || additionalTags.length === 0"> - None new tags
+              selected -
+            </span>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+
+
     </div>
 
     <!-- Delete -->
     <ng-template #elseTemplate>
-      <!--  TODO apply to delete row  -->
-      <!--  Send delete request .. deleted  -->
-      <!--  Request new page ...  -->
       Sure to delete <b>{{localData.name}}</b>?
     </ng-template>
     <br>
@@ -129,15 +187,19 @@
   </div>
 
   <!--  <div mat-dialog-actions>-->
-  <div class="row d-flex text-center">
-    <div class="col">
-      <button mat-button type="submit" mat-flat-button color="primary">{{action}}</button>
-    </div>
-    <div class="col">
-      <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
-    </div>
-  </div>
+
   <!--  </div>-->
 </form>
+
+<div class="row d-flex text-center">
+  <div class="col">
+    <button mat-button type="submit" (click)="doAction(documentForm)" mat-flat-button
+            color="primary">{{action}}</button>
+  </div>
+  <div class="col">
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+  </div>
+</div>
+
 <!--  </mat-card-content>-->
 <!--</mat-card>-->

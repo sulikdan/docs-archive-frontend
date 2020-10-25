@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {DatePipe} from '@angular/common';
 
@@ -7,7 +7,7 @@ import {DatePipe} from '@angular/common';
   templateUrl: './date-picker-popup.component.html',
   styleUrls: ['./date-picker-popup.component.scss']
   ,
-  // encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 
 export class DatePickerPopupComponent implements OnInit {
@@ -33,6 +33,7 @@ export class DatePickerPopupComponent implements OnInit {
   }
 
   addEventFrom(type: string, event: MatDatepickerInputEvent<Date>) {
+    console.log('even...', type, event);
     if (event == null || event.value == null) {
       return;
     }
@@ -51,7 +52,7 @@ export class DatePickerPopupComponent implements OnInit {
     if (event == null || event.value == null) {
       return;
     }
-    //TODO check if values are inbetween
+    // TODO check if values are inbetween
     if (this.selectedDateFrom !== null && event.value < this.selectedDateFrom) {
       this.isCorrect = false;
       return;
