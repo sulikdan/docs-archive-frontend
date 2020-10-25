@@ -17,16 +17,18 @@
 #COPY --from=compile-image /opt/ng/dist/app-name /usr/share/nginx/html
 # Stage 1
 
-FROM node:15.0.1-alpine3.12 as build-step
+FROM node:14.5.0 as build-step
 
 
 RUN mkdir -p /app
 
 WORKDIR /app
 COPY package.json /app
+#RUN npm install -g npm@7.0.5
 RUN npm install
 COPY . /app
 RUN npm run build --prod
+
 
 
 
