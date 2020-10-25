@@ -12,7 +12,7 @@ export class FileUploadService {
   }
 
   postFile(filesToUpload: File[], docConfig: DocConfig): Observable<Document> {
-    const endpoint = 'http://localhost:8081/api/documents/';
+    const endpoint = 'http://localhost:8085/api/documents/';
 
     const formData: FormData = new FormData();
     for (const file of filesToUpload) {

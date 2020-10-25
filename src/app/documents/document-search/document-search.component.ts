@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SearchDocParams} from '../../shared/models/search-doc-params.model';
 import {Subscription} from 'rxjs';
 import {DocumentService} from '../document.service';
@@ -15,12 +15,14 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
 
   searchDocParams: SearchDocParams;
 
+  @Input() pageSize: number;
+
   searchOptionDropDown = 'Search options';
 
   clickedSearchOption: string = null;
 
   searchOptions = ['Id', 'Text', 'State', 'Language', 'Text-Regex',
-    'Created date', 'Updated dates'];
+    'Created date', 'Updated dates', 'Shared'];
 
   languages = [];
 
@@ -29,19 +31,22 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
   isSearching = false;
   isResetting = false;
 
+  showAdditionalSettings = false;
+
   searchTags = [];
 
   constructor(private documentService: DocumentService) {
   }
 
   ngOnInit(): void {
+    this.searchDocParams = new SearchDocParams();
+
     this.documentService.languagesMap.forEach((value, key) => {
       this.languages.push(value);
     });
 
     this.docStates = this.documentService.docStatesList;
 
-    this.searchDocParams = new SearchDocParams();
     this.newDataSub = this.documentService.newDataReceivedSubject.subscribe((value: Page) => {
 
       this.isSearching = false;
@@ -50,6 +55,9 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnDestroy(): void {
+    this.newDataSub.unsubscribe();
+  }
 
   onSearchOptionSelect(option: string) {
     console.log('Selected option:' + option);
@@ -70,16 +78,24 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
 
     switch (this.clickedSearchOption) {
       case this.searchOptions[0]:
-        this.searchDocParams.ids.push(providedValue);
+        if (this.searchDocParams.ids.indexOf(providedValue) === -1) {
+          this.searchDocParams.ids.push(providedValue);
+        }
         break;
       case  this.searchOptions[1]:
-        this.searchDocParams.searchedText.push(providedValue);
+        if (this.searchDocParams.searchedText.indexOf(providedValue) === -1) {
+          this.searchDocParams.searchedText.push(providedValue);
+        }
         break;
       case this.searchOptions[2]:
-        this.searchDocParams.states.push(providedValue);
+        if (this.searchDocParams.states.indexOf(providedValue) === -1) {
+          this.searchDocParams.states.push(providedValue);
+        }
         break;
       case this.searchOptions[3]:
-        this.searchDocParams.languages.push(providedValue);
+        if (this.searchDocParams.languages.indexOf(providedValue) === -1) {
+          this.searchDocParams.languages.push(providedValue);
+        }
         break;
       case this.searchOptions[4]:
         this.searchDocParams.textRegex = providedValue;
@@ -103,6 +119,8 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
 
   onSearchClick() {
     console.log('OnSearchClicked!!!');
+    this.searchDocParams.pageSize = this.pageSize;
+    this.searchDocParams.pageIndex = 0;
     this.documentService.fetchDocuments(this.searchDocParams);
     this.isSearching = true;
   }
@@ -118,23 +136,74 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
   }
 
   removeItemFromIds(index: number) {
-    this.searchDocParams.ids.splice(index, 1);
+    if (index >= 0) {
+      this.searchDocParams.ids.splice(index, 1);
+    }
   }
 
   removeItemFromText(index: number) {
-    this.searchDocParams.searchedText.splice(index, 1);
+    if (index >= 0) {
+      this.searchDocParams.searchedText.splice(index, 1);
+    }
   }
 
   removeItemFromStates(index: number) {
-    this.searchDocParams.states.splice(index, 1);
+    if (index >= 0) {
+      this.searchDocParams.states.splice(index, 1);
+    }
   }
 
   removeItemFromLanguages(index: number) {
-    this.searchDocParams.languages.splice(index, 1);
+    if (index >= 0) {
+      this.searchDocParams.languages.splice(index, 1);
+    }
   }
 
-  ngOnDestroy(): void {
-    this.newDataSub.unsubscribe();
+  selectedCreatedDateFrom($event: Date) {
+    console.log('Called', event);
+    this.searchDocParams.createdFrom = $event;
   }
 
+  selectedCreatedDateTo($event: Date) {
+    this.searchDocParams.createdTo = $event;
+  }
+
+  selectedUpdatedDateFrom($event: Date) {
+    this.searchDocParams.updatedFrom = $event;
+  }
+
+  selectedUpdatedDateTo($event: Date) {
+    this.searchDocParams.updatedTo = $event;
+  }
+
+  onCollapseClick() {
+    this.showAdditionalSettings = !this.showAdditionalSettings;
+  }
+
+  resetAdditionalSetting(regex: string) {
+    console.log('Reseting: ' + regex);
+    switch (regex) {
+      case 'regex':
+        this.searchDocParams.textRegex = null;
+        break;
+      case 'createFrom':
+        this.searchDocParams.createdFrom = null;
+        break;
+      case 'createTo':
+        this.searchDocParams.createdTo = null;
+        break;
+      case 'updateFrom':
+        this.searchDocParams.updatedFrom = null;
+        break;
+      case 'updateTo':
+        this.searchDocParams.updatedTo = null;
+        break;
+      default:
+        break;
+    }
+  }
+
+  selectedIsShared(event: Event) {
+
+  }
 }

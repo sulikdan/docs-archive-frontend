@@ -1,6 +1,7 @@
 # DocsArchiveFe
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0 and later
+ upgraded to version 10.1.3 with all others libraries.
 
 ## Development server
 

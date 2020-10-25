@@ -1,1 +1,34 @@
-<p>pages works!</p>
+<div class="card">
+  <div class="card-header text-center" *ngIf=" length !== 0">
+    <b>Page No. {{pageIndex + 1}}</b>
+  </div>
+  <div class="card-header text-center" *ngIf=" length === 0 ">
+    <b>No pages available</b>
+  </div>
+
+  <div class="card-body">
+    <div class="card-text">
+      <div class="container">
+        <div class="row">
+          <div class="col" *ngIf="length === 0">
+            {{alternativeText}}
+          </div>
+          <div class="col" *ngIf="length !== 0">
+            {{row.pages[pageIndex].content}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <mat-paginator #paginator
+                   [length]="length"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   (page)="pageEvent = getServerData($event)"
+                   *ngIf="row !== null"
+    >
+    </mat-paginator>
+  </div>
+</div>

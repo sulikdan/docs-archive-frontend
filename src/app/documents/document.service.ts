@@ -34,7 +34,7 @@ export class DocumentService {
 
   newDataReceivedSubject: Subject<Page>;
 
-  endpoint = 'http://localhost:8081/api/documents/';
+  endpoint = 'http://localhost:8085/api/documents/';
 
   allDocumentList: Document[];
   currSearchDocParams: SearchDocParams;
@@ -61,13 +61,13 @@ export class DocumentService {
     realDoc.asyncApiInfo = doc.asyncApiInfo;
     realDoc.docState = doc.docState;
     realDoc.docConfig = doc.docConfig;
-    // realDoc.tags = doc.tags;
-    realDoc.pages = doc.pages;
+    realDoc.tags = doc.tags.slice();
+    realDoc.pages = doc.pages.slice();
 
     // headers.append('Content-type', 'application/json');
-    const body = {resource: JSON.stringify(realDoc)};
+    // const body = {updateDoc: JSON.stringify(realDoc)};
 
-    // return this.http.patch<Document>(this.endpoint + doc.id, JSON.stringify(doc));
+    // return this.http.patch<Document>(this.endpoint + doc.id, {JSON.stringify(realDoc)});
     return this.http.patch<Document>(this.endpoint + realDoc.id, realDoc);
   }
 
@@ -121,11 +121,28 @@ export class DocumentService {
     console.log('Stringified data: ');
     console.log(JSON.stringify(searchDocParams));
 
-    this.http.get<Page>(this.endpoint, {params: data}).subscribe((pageData: Page) => {
+    this.http.get<Page>(this.endpoint, {params: data}).subscribe((pageData: any) => {
 
         console.log('working?', pageData);
         this.totalElements = pageData.totalElements;
+        pageData.content.forEach(
+          value => {
+            value.fileUrl = value.links[1].href;
+            // if (value.documentPreview != null && value.documentPreview.length > 0) {
+            //   value.documentPreview = 'data:image/jpg;base64,' + value.documentPreview;
+            // }
+            const tmp = [];
+            value.tags.forEach(value1 => {
+              tmp.push(value1.tagType);
+            });
+            value.tags = tmp;
+          }
+        );
+
         this.allDocumentList = pageData.content;
+
+        console.log('After changes', this.allDocumentList);
+
         this.newDataReceivedSubject.next(pageData);
 
       }, error => {

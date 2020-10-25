@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-header text-center">
+    <b>Document file preview</b>
+  </div>
+  <img class="card-img text-center" src="../../../assets/hold_up.jpg" *ngIf="row.documentPreview === null" />
+  <a [href]="row.fileUrl">
+  <img class="card-img text-center" [src]="imageSource" *ngIf="row.documentPreview !== null"/>
+  </a>
+  <div class="card-body">
+    <div class="card-content text-center" *ngIf="row.documentPreview === null">
+      This document doesn't have image, therefore it is not download-able.
+    </div>
+    <div class="card-content text-center" *ngIf="row.documentPreview !== null">
+      To Display image clink on the image or following
+      <a href="row.fileUrl">link</a>
+      .
+    </div>
+  </div>
+</div>

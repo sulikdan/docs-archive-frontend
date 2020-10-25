@@ -6,74 +6,22 @@ import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.component.html'
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit, OnDestroy {
-  isLoginMode;
-  isLoading = false;
-  error: string = null;
+export class AuthComponent implements OnInit{
 
-  loggedSub: Subscription;
-
-  constructor(private authService: AuthService, private router: Router) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.isLoginMode = !this.authService.isLogged;
+    // this.isLoginMode = !this.authService.isLogged;
 
-    this.loggedSub = this.authService.loggedSub.subscribe(
-      value => {
-        this.isLoginMode = !value;
-      }
-    );
-  }
-
-  onSubmit(authForm: NgForm) {
-    if (!authForm.valid) {
-      return;
-    }
-    const email = authForm.value.email;
-    const password = authForm.value.password;
-
-    this.authService.login(email, password);
-
-    // TODO subscribe
-    if (this.authService.isLogged) {
-      this.router.navigate(['/home']);
-    }
-
-    // let authObs: Observable<AuthResponseData>;
-    //
-    // this.isLoading = true;
-    //
-    // if (this.isLoginMode) {
-    //   authObs = this.authService.login(email, password);
-    // } else {
-    //   authObs = this.authService.signup(email, password);
-    // }
-    //
-    // authObs.subscribe(
-    //   resData => {
-    //     console.log(resData);
-    //     this.isLoading = false;
-    //     this.router.navigate(['/recipes']);
-    //   },
-    //   errorMessage => {
-    //     console.log(errorMessage);
-    //     this.error = errorMessage;
-    //     this.isLoading = false;
+    // this.loggedSub = this.authService.loggedSub.subscribe(
+    //   value => {
+    //     this.isLoginMode = !value;
     //   }
     // );
-
-    authForm.reset();
-  }
-
-  onSwitchMode() {
-    this.isLoginMode = !this.isLoginMode;
-  }
-
-  ngOnDestroy() {
-    this.loggedSub.unsubscribe();
   }
 
 }

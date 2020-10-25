@@ -8,11 +8,13 @@ export class SearchDocParams {
   languages: string[] = [];
   tags: string[] = [];
 
-  textRegex: string;
+  textRegex: string = null;
 
-  createdFrom: Date;
-  createdTo: Date;
-  updatedFrom: Date;
-  updatedTo: Date;
+  createdFrom: Date = null;
+  createdTo: Date = null;
+  updatedFrom: Date = null;
+  updatedTo: Date = null;
+
+  isShared = null;
 
 }

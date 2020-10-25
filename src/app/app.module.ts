@@ -10,7 +10,7 @@ import {ImportDocumentsComponent} from './import-documents/import-documents.comp
 import {ImportComponent} from './import/import.component';
 import {HomeComponent} from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AsyncApiInfoComponent} from './documents/async-api-info/async-api-info.component';
 import {DocConfigComponent} from './documents/doc-config/doc-config.component';
 import {PagesComponent} from './documents/pages/pages.component';
@@ -35,6 +35,15 @@ import {DocExtendedViewComponent} from './documents/doc-extended-view/doc-extend
 import { MessageComponent } from './shared/components/message/message.component';
 import {MessageService} from './shared/services/message.service';
 import {FileUploadService} from './import-documents/file-upload.service';
+import { DocumentPreviewComponent } from './documents/document-preview/document-preview.component';
+import { DocumentTagsComponent } from './documents/document-tags/document-tags.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
+import { LoginComponent } from './auth/login/login.component';
+import { UserComponent } from './shared/models/user/user.component';
+import {BasicAuthHttpInterceptorService} from './auth/basic-auth-http-interceptor.service';
+import { ChangePasswordComponent } from './auth/password-reset/change-password/change-password.component';
+import { ConfirmComponent } from './auth/register/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +62,15 @@ import {FileUploadService} from './import-documents/file-upload.service';
     DatePickerPopupComponent,
     DocumentEditComponent,
     DocExtendedViewComponent,
-    MessageComponent
+    MessageComponent,
+    DocumentPreviewComponent,
+    DocumentTagsComponent,
+    RegisterComponent,
+    PasswordResetComponent,
+    LoginComponent,
+    UserComponent,
+    ChangePasswordComponent,
+    ConfirmComponent
   ],
   exports:[
     MessageComponent
@@ -83,7 +100,8 @@ import {FileUploadService} from './import-documents/file-upload.service';
     Document,
     MessageService,
     FileUploadService,
-    DatePipe
+    DatePipe,
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthHttpInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })
