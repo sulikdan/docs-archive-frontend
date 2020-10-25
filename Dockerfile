@@ -1,10 +1,11 @@
-FROM node:13.3.0 AS compile-image
+FROM node:15.0.1 AS compile-image
 
-RUN npm install -g yarn
+#RUN npm install -g yarn
 
 WORKDIR /opt/ng
-COPY .npmrc package.json yarn.lock ./
-RUN yarn install
+#COPY .npmrc package.json yarn.lock ./
+COPY package.json ./
+#RUN yarn install
 
 ENV PATH="./node_modules/.bin:$PATH"
 
