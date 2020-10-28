@@ -20,6 +20,6 @@ RUN npm run build --prod
 #EXPOSE 4200
 
 FROM nginx:1.19.3-alpine
-COPY nginx.conf /etc/nginx/nginx.conf
+#COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build-step /usr/src/app/dist/docs-archive-fe /usr/share/nginx/html
 
