@@ -2,10 +2,8 @@
 
 FROM node:14.5.0 as build-step
 
-
-RUN mkdir -p /app
-
-WORKDIR /app
+#RUN mkdir -p /app
+WORKDIR /usr/src/app
 COPY package.json package-lock.json  ./
 
 RUN npm install
@@ -23,5 +21,5 @@ RUN npm run build --prod
 
 FROM nginx:1.19.3-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build-step /app/dist/docs-archive-fe /usr/share/nginx/html
+COPY --from=build-step /usr/src/app/dist/docs-archive-fe /usr/share/nginx/html
 
