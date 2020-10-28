@@ -66,12 +66,30 @@ export class LoginComponent implements OnInit {
 
 
     this.authService.login(username, password).subscribe(value => {
+        console.log('Return value', JSON.stringify(value));
       },
       error => {
-        console.log('Error while logging', error.toString());
+        console.log('Error while logging', JSON.stringify(error));
         this.authService.isLogged = false;
         this.authService.loggedSub.next(false);
         this.isProcessing = false;
+        this.authService.authenticateLocal(username, password).subscribe(value => {
+
+          },
+          error2 => {
+            console.log('Error while logging', JSON.stringify(error2));
+            this.authService.isLogged = false;
+            this.authService.loggedSub.next(false);
+            this.isProcessing = false;
+          },
+          () => {
+            this.isProcessing = false;
+            this.authService.isLogged = true;
+            this.authService.loggedSub.next(true);
+            this.router.navigate(['/home']);
+          }
+        );
+
       },
       () => {
         this.isProcessing = false;
