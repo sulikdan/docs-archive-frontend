@@ -4,6 +4,7 @@ import {Document} from '../shared/models/document.model';
 import {Page} from '../shared/models/page.model';
 import {SearchDocParams} from '../shared/models/search-doc-params.model';
 import {Subject} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class DocumentService {
 
   newDataReceivedSubject: Subject<Page>;
 
-  endpoint = 'http://localhost:8085/api/documents/';
+  endpoint = 'http://' + environment.backend.address + ':' + environment.backend.port + '/api/documents/';
 
   allDocumentList: Document[];
   currSearchDocParams: SearchDocParams;

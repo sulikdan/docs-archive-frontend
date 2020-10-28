@@ -3,6 +3,7 @@ import {BehaviorSubject, Subject, throwError} from 'rxjs';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
 
 export class User {
   constructor(
@@ -28,7 +29,7 @@ export class AuthService {
   public user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  private serverUrl = 'http://localhost:8085';
+  private serverUrl = 'http://' + environment.backend.address + ':' + environment.backend.port ;
   private userUrl = '/api/users';
 
   public isLogged = false;

@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
+
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
@@ -32,18 +33,18 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {DocumentEditComponent} from './documents/document-edit/document-edit.component';
 import {DocExtendedViewComponent} from './documents/doc-extended-view/doc-extended-view.component';
-import { MessageComponent } from './shared/components/message/message.component';
+import {MessageComponent} from './shared/components/message/message.component';
 import {MessageService} from './shared/services/message.service';
 import {FileUploadService} from './import-documents/file-upload.service';
-import { DocumentPreviewComponent } from './documents/document-preview/document-preview.component';
-import { DocumentTagsComponent } from './documents/document-tags/document-tags.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
-import { LoginComponent } from './auth/login/login.component';
-import { UserComponent } from './shared/models/user/user.component';
+import {DocumentPreviewComponent} from './documents/document-preview/document-preview.component';
+import {DocumentTagsComponent} from './documents/document-tags/document-tags.component';
+import {RegisterComponent} from './auth/register/register.component';
+import {PasswordResetComponent} from './auth/password-reset/password-reset.component';
+import {LoginComponent} from './auth/login/login.component';
+import {UserComponent} from './shared/models/user/user.component';
 import {BasicAuthHttpInterceptorService} from './auth/basic-auth-http-interceptor.service';
-import { ChangePasswordComponent } from './auth/password-reset/change-password/change-password.component';
-import { ConfirmComponent } from './auth/register/confirm/confirm.component';
+import {ChangePasswordComponent} from './auth/password-reset/change-password/change-password.component';
+import {ConfirmComponent} from './auth/register/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import { ConfirmComponent } from './auth/register/confirm/confirm.component';
     ChangePasswordComponent,
     ConfirmComponent
   ],
-  exports:[
+  exports: [
     MessageComponent
   ],
   imports: [
@@ -101,7 +102,7 @@ import { ConfirmComponent } from './auth/register/confirm/confirm.component';
     MessageService,
     FileUploadService,
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthHttpInterceptorService, multi: true }
+    {provide: HTTP_INTERCEPTORS, useClass: BasicAuthHttpInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent]
 })
