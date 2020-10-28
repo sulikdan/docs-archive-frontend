@@ -35,7 +35,9 @@ export class DocumentService {
 
   newDataReceivedSubject: Subject<Page>;
 
-  endpoint = 'http://' + environment.backend.address + ':' + environment.backend.port + '/api/documents/';
+  private readonly serverUrl: string;
+
+  endpoint: string;
 
   allDocumentList: Document[];
   currSearchDocParams: SearchDocParams;
@@ -48,6 +50,8 @@ export class DocumentService {
     this.allDocumentList = [];
     this.currSearchDocParams = new SearchDocParams();
     this.newDataReceivedSubject = new Subject<Page>();
+    this.serverUrl = 'http://' + environment.backend.address + ':' + environment.backend.port;
+    this.endpoint = this.serverUrl + '/api/documents/';
   }
 
   patchDocument(doc: Document, docInPageIndex: number) {

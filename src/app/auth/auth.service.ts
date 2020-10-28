@@ -29,13 +29,16 @@ export class AuthService {
   public user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  private serverUrl = 'http://' + environment.backend.address + ':' + environment.backend.port ;
-  private userUrl = '/api/users';
+  private readonly serverUrl: string;
+  private readonly userUrl = '/api/users';
 
   public isLogged = false;
   public loggedSub = new Subject<boolean>();
 
   constructor(private httpClient: HttpClient, private router: Router) {
+    console.log('Current enviroment: ' + environment.production);
+    console.log('Server :' + environment.backend.address);
+    this.serverUrl = 'http://' + environment.backend.address + ':' + environment.backend.port;
   }
 
   login(username: string, password: string) {
