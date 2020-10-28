@@ -18,6 +18,9 @@ RUN npm run build --prod
 
 # Stage 2
 
+# Open the port, inside docker network
+EXPOSE 4200
+
 FROM nginx:1.19.3-alpine
 COPY --from=build-step /app/dist/docs-archive-fe /usr/share/nginx/html
 
