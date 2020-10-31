@@ -73,22 +73,22 @@ export class LoginComponent implements OnInit {
         this.authService.isLogged = false;
         this.authService.loggedSub.next(false);
         this.isProcessing = false;
-        this.authService.authenticateLocal(username, password).subscribe(value => {
-
-          },
-          error2 => {
-            console.log('Error while logging', JSON.stringify(error2));
-            this.authService.isLogged = false;
-            this.authService.loggedSub.next(false);
-            this.isProcessing = false;
-          },
-          () => {
-            this.isProcessing = false;
-            this.authService.isLogged = true;
-            this.authService.loggedSub.next(true);
-            this.router.navigate(['/home']);
-          }
-        );
+        // this.authService.authenticateLocal(username, password).subscribe(value => {
+        //
+        //   },
+        //   error2 => {
+        //     console.log('Error while logging', JSON.stringify(error2));
+        //     this.authService.isLogged = false;
+        //     this.authService.loggedSub.next(false);
+        //     this.isProcessing = false;
+        //   },
+        //   () => {
+        //     this.isProcessing = false;
+        //     this.authService.isLogged = true;
+        //     this.authService.loggedSub.next(true);
+        //     this.router.navigate(['/home']);
+        //   }
+        // );
 
       },
       () => {
