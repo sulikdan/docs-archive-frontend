@@ -13,6 +13,7 @@ COPY package.json package-lock.json  ./
 
 RUN npm install font-awesome --save
 RUN npm install -g @angular/cli@10.1.3
+RUN npm install
 #RUN npm update
 
 COPY . .
