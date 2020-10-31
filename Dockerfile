@@ -11,7 +11,10 @@ COPY . .
 
 #ARG configuration=production
 
-RUN npm run build -- --prod
+# Production
+#RUN npm run build -- --prod
+# Dev - localhost
+RUN npm run build
 
 
 # Stage 2
