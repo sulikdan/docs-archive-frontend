@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "clean": "rm -rf node_modules",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
