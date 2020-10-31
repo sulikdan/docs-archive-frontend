@@ -46,7 +46,7 @@ import {BasicAuthHttpInterceptorService} from './auth/basic-auth-http-intercepto
 import {ChangePasswordComponent} from './auth/password-reset/change-password/change-password.component';
 import {ConfirmComponent} from './auth/register/confirm/confirm.component';
 
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 
 @NgModule({
