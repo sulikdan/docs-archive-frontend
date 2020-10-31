@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 #Cleaning
 #RUN npm run clean
 
-COPY package.json package-lock.json  ./
+COPY package.json  ./
 
 RUN npm install font-awesome --save
 COPY . .
