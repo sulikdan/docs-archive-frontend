@@ -14,6 +14,7 @@ COPY . .
 # Production
 #RUN npm run build -- --prod
 # Dev - localhost
+RUN npm run clean
 RUN npm run build
 
 
