@@ -2,11 +2,15 @@
 
 FROM node:14.5.0 as build-step
 
+
 #RUN mkdir -p /app
 WORKDIR /usr/src/app
+#Cleaning
+RUN npm run clean
+
 COPY package.json package-lock.json  ./
 
-RUN npm install
+RUN npm install font-awesome --save
 COPY . .
 
 #ARG configuration=production
@@ -14,7 +18,6 @@ COPY . .
 # Production
 #RUN npm run build -- --prod
 # Dev - localhost
-RUN npm run clean
 RUN npm run build
 
 
