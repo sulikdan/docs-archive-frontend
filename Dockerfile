@@ -4,7 +4,7 @@ FROM node:14.5.0 as build-step
 
 
 #RUN mkdir -p /app
-WORKDIR /usr/src/app
+#WORKDIR /usr/src/app
 #Cleaning
 RUN npm run clean
 
