@@ -1,6 +1,6 @@
 # Stage 1
 
-FROM node:12.11.1 as build-step
+FROM node:10.13.0 as build-step
 
 
 #RUN mkdir -p /app
@@ -8,9 +8,13 @@ WORKDIR /usr/src/app
 #Cleaning
 #RUN npm run clean
 
+#COPY package.json  ./
 COPY package.json package-lock.json  ./
 
 RUN npm install font-awesome --save
+RUN npm install -g @angular/cli@10.1.3
+#RUN npm update
+
 COPY . .
 
 #ARG configuration=production
@@ -18,7 +22,7 @@ COPY . .
 # Production
 #RUN npm run build -- --prod
 # Dev - localhost
-RUN npm run build
+RUN npm run build -- --prod
 
 
 # Stage 2
