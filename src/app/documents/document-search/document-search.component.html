@@ -33,13 +33,14 @@
 
               <!--  Id  -->
               <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[0]">
-                <input type="text" class="form-control" id="{{searchOptions[0]}}" placeholder="Document id"
+                <input type="text" class="form-control" #selectedId id="{{searchOptions[0]}}" placeholder="Document id"
                        (keyup.enter)="onAddClick($event)">
               </div>
 
               <!--  Text  -->
               <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[1]">
-                <input type="text" class="form-control" id="{{searchOptions[1]}}" placeholder="Text in document"
+                <input type="text" class="form-control" #selectedText id="{{searchOptions[1]}}"
+                       placeholder="Text in document"
                        (keyup.enter)="onAddClick($event)"
                 >
               </div>
@@ -89,6 +90,14 @@
                   Shared docs only
                 </label>
               </div>
+
+              <!--  Tags  -->
+              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[8]">
+                <input type="text" class="form-control" #selectedTag id="{{searchOptions[8]}}"
+                       placeholder="Document tag"
+                       (keyup.enter)="onAddClick($event)">
+              </div>
+
             </div>
           </div>
 
@@ -199,6 +208,25 @@
           </div>
         </div>
 
+
+        <!--   Tags     -->
+        <div class="col card shadow" style="min-width: 225px;">
+          <div class="card-header">
+            <b>Tag</b>
+          </div>
+          <div class="card-body">
+            <div (click)="removeItemFromTag(i)" class="d-block mt-1 mb-1"
+                 *ngFor="let language of searchDocParams.tags; let i = index;">
+              <a class="badge badge-pill badge-light" style="font-size: 0.8rem;"
+                 href="javascript:void(0)">{{language}}</a>
+            </div>
+            <span class="text-secondary"
+                  *ngIf="searchDocParams.tags === null || searchDocParams.tags.length === 0"> - None
+                tag selected -
+            </span>
+          </div>
+        </div>
+
       </div>
 
       <div class="row justify-content-center align-items-center text-center mt-3 d-flex" id="accordion">
@@ -208,12 +236,6 @@
             <h5 class="mb-0">
               <button class="btn btn-link pull-left" data-toggle="collapse" data-target="#collapseOne"
                       aria-controls="collapseOne" (click)="onCollapseClick()">
-                <!--                  <span *ngIf="this.showAdditionalSettings">-->
-                <!--                    Show additional settings-->
-                <!--                  </span>-->
-                <!--                <span *ngIf="!this.showAdditionalSettings">-->
-                <!--                    Hide additional settings-->
-                <!--                  </span>-->
                 Additional settings
               </button>
             </h5>
@@ -238,7 +260,8 @@
                     <td class="align-middle" colspan="1" *ngIf="searchDocParams.isShared !== null"
                     >{{searchDocParams.isShared.toString() | titlecase}}</td>
                     <td class="align-middle" colspan="1" *ngIf="searchDocParams.isShared === null"
-                    >None selected</td>
+                    >None selected
+                    </td>
                   </tr>
                   <tr *ngIf="searchDocParams.textRegex !== null">
                     <th class="align-middle" scope="row">Text regex</th>

@@ -3,6 +3,9 @@ import {AuthService} from '../auth/auth.service';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 
+/**
+ * Compopnent used to show header -> navigation bar etc..
+ */
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

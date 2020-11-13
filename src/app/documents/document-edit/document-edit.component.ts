@@ -2,6 +2,7 @@ import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DocumentService} from '../document.service';
 import {Document} from '../../shared/models/document.model';
+// import {Chec} from "@angular/forms";
 import {DocConfig} from '../../shared/models/doc-config.model';
 
 @Component({
@@ -120,5 +121,9 @@ export class DocumentEditComponent implements OnInit {
     }
 
     (document.getElementById('newTags') as HTMLInputElement).value = '';
+  }
+
+  changeDocSharing() {
+    this.documentToEdit.isShared = !this.documentToEdit.isShared;
   }
 }

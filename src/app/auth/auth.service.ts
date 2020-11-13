@@ -42,13 +42,9 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    // if (username === 'admin@admin.com' && password === 'admin') {
-    //   this.isLogged = true;
-    //   this.loggedSub.next(true);
-    //   // this.user.next('admin');
-    // } else {
+
     return this.authenticate(username, password);
-    // }
+
   }
 
   logout() {
@@ -57,10 +53,6 @@ export class AuthService {
     // localStorage.removeItem('userData');
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('jwtToken');
-    // if (this.tokenExpirationTimer) {
-    //   clearTimeout(this.tokenExpirationTimer);
-    // }
-    // this.tokenExpirationTimer = null;
 
     this.isLogged = false;
     this.loggedSub.next(false);
@@ -72,10 +64,10 @@ export class AuthService {
       map(
         userData => {
           sessionStorage.setItem('username', username);
-          console.log('Tokens:', userData.jwtToken, ' ', userData.token);
+          // console.log('Tokens:', userData.jwtToken, ' ', userData.token);
           const tokenStr = 'Bearer ' + userData.jwtToken;
           // const tokenStr = userData.jwtToken;
-          console.log('Token value:', tokenStr);
+          // console.log('Token value:', tokenStr);
           if (userData.jwtToken !== undefined) {
             sessionStorage.setItem('jwtToken', tokenStr);
           }
@@ -84,31 +76,6 @@ export class AuthService {
       )
     );
   }
-
-  authenticateLocal(username, password) {
-    return this.httpClient.post<any>('http://localhost:8085/api/users/authenticate', {username, password}).pipe(
-      catchError(this.handleError),
-      map(
-        userData => {
-          sessionStorage.setItem('username', username);
-          console.log('Tokens:', userData.jwtToken, ' ', userData.token);
-          const tokenStr = 'Bearer ' + userData.jwtToken;
-          // const tokenStr = userData.jwtToken;
-          console.log('Token value:', tokenStr);
-          if (userData.jwtToken !== undefined) {
-            sessionStorage.setItem('jwtToken', tokenStr);
-          }
-          return userData;
-        }
-      )
-    );
-  }
-
-  isUserLoggedIn() {
-    const user = sessionStorage.getItem('username');
-    return !(user === null);
-  }
-
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';

@@ -1,6 +1,6 @@
 <!-- Custom search to server -->
 
-<app-document-search [pageSize]="pageSize" ></app-document-search>
+<app-document-search [pageSize]="pageSize"></app-document-search>
 
 
 <div class="mat-elevation-z8 mt-5 text-center">
@@ -18,9 +18,18 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
       <td mat-cell *matCellDef="let element">
         <div *ngIf="column === 'action'" class="action-link">
-          <i class="fa fa-2x fa-pencil text-primary btn" title="edit" (click)="openDialog('Update',element)"></i>
-          &nbsp;
-          <i class="fa fa-2x fa-trash text-danger btn" title="delete" (click)="openDialog('Delete',element)"></i>
+
+          <i *ngIf="element.isOwner" class="fa fa-2x fa-pencil text-primary btn" title="edit"
+             (click)="openDialog('Update',element)"></i>
+          <i *ngIf="!element.isOwner" class="fa fa-2x fa-pencil text-primary btn disabled" title="edit"
+             (click)="openDialog('Update',element)"></i>
+
+
+          <i *ngIf="element.isOwner" class="fa fa-2x fa-trash text-danger btn" title="delete"
+             (click)="openDialog('Delete',element)"></i>
+          <i *ngIf="!element.isOwner" class="fa fa-2x fa-trash text-danger btn disabled" title="delete"
+             (click)="openDialog('Delete',element)"></i>
+
         </div>
         <div *ngIf="column === 'documentProcessStatus'">
           {{element.docState}}

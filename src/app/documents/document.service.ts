@@ -66,8 +66,15 @@ export class DocumentService {
     realDoc.asyncApiInfo = doc.asyncApiInfo;
     realDoc.docState = doc.docState;
     realDoc.docConfig = doc.docConfig;
-    realDoc.tags = doc.tags.slice();
-    realDoc.pages = doc.pages.slice();
+    if (doc.tags !== null && doc.tags !== undefined) {
+      realDoc.tags = doc.tags.slice();
+    }
+
+    if (doc.pages !== null && doc.pages !== undefined) {
+      realDoc.pages = doc.pages.slice();
+    }
+    realDoc.isShared = doc.isShared;
+
 
     // headers.append('Content-type', 'application/json');
     // const body = {updateDoc: JSON.stringify(realDoc)};

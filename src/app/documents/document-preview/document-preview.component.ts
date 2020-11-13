@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Document} from '../../shared/models/document.model';
 import {DomSanitizer} from '@angular/platform-browser';
+import {HttpClient} from '@angular/common/http';
+
 
 @Component({
   selector: 'app-document-preview',
@@ -13,7 +15,7 @@ export class DocumentPreviewComponent implements OnInit {
 
   imageSource: any;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer, private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -32,4 +34,20 @@ export class DocumentPreviewComponent implements OnInit {
     this.imageSource = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
+  downloadFile(fileUrl: string, origName: string) {
+    this.httpClient.get(fileUrl, {responseType: 'blob'})
+      .subscribe((res) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(res);
+        a.download = origName;
+        // start download
+        a.click();
+        window.URL.revokeObjectURL(fileUrl);
+        a.remove(); // remove the element
+      }, error => {
+        console.log('download error:', JSON.stringify(error));
+      }, () => {
+        console.log('Completed file download.');
+      });
+  }
 }

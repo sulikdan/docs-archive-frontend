@@ -1,14 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FileUploadService} from './file-upload.service';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {DocConfig} from '../shared/models/doc-config.model';
 import {DocumentService} from '../documents/document.service';
 import {MessageService} from '../shared/services/message.service';
 
+/**
+ * Component, where is dealt with import of files.
+ */
 @Component({
   selector: 'app-import-documents', templateUrl: './import-documents.component.html'
 })
 export class ImportDocumentsComponent implements OnInit {
+
+  // @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   languagesMap: Map<string, string>;
 
@@ -17,6 +22,8 @@ export class ImportDocumentsComponent implements OnInit {
   isSubmiting = false;
   isMaximumBatches = false;
   waitForLastBatchToBeFilled = false;
+
+  isEmpty = true;
 
   batchDocsCount = 1;
 
@@ -49,9 +56,17 @@ export class ImportDocumentsComponent implements OnInit {
     const fileArr: File[] = [];
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < htmlInputElement.files.length; i++) {
+      const extension = htmlInputElement.files[i].name.split('.').pop();
+      if (extension !== 'jpg' && extension !== 'png' && extension !== 'tiff' && extension !== 'pdf') {
+        this.messageService.error('Extension ' + extension + ' is not supported, please choose file with file format:\n'
+          + 'jpg, tiff, png or pdf.');
+
+        return;
+      }
       fileArr.push(htmlInputElement.files[i]);
     }
 
+    this.isEmpty = false;
     this.filesSelected[index] = fileArr;
   }
 
@@ -90,7 +105,7 @@ export class ImportDocumentsComponent implements OnInit {
 
             setTimeout(() => {
               this.isErrorUploading = false;
-            }, 10000);
+            }, 5000);
 
           }, () => {
             console.log('Uploaded complete!');
@@ -105,7 +120,9 @@ export class ImportDocumentsComponent implements OnInit {
     }
 
     this.docBatches.clear();
+    this.isEmpty = true;
     this.docBatches.push(this.createForm(null));
+    // this.fileInput.nativeElement.value = '';
     this.filesSelected = [null];
   }
 

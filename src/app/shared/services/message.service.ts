@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {Message} from '../models/message.model';
 
+/**
+ * Service used to create dialog/pop-up messages.
+ */
 @Injectable({
   providedIn: 'root',
 })

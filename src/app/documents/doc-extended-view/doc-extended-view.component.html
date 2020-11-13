@@ -31,6 +31,10 @@
           <th scope="row">Document state</th>
           <td>{{row.docState}}</td>
         </tr>
+        <tr>
+          <th scope="row">Shared</th>
+          <td>{{row.isShared.toString() | titlecase}}</td>
+        </tr>
         <tr *ngIf="showCreationDate">
           <th scope="row">Date of creation</th>
           <td>{{row.createDateTime}}</td>

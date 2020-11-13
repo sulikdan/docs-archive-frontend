@@ -51,6 +51,31 @@
 
       </div>
 
+
+      <div class="row">
+
+        <div class="col align-middle mr-2 mt-2">
+          <!--          <mat-form-field>-->
+          <!--            <mat-checkbox class="my-checkbox-margin" [(ngModel)]="documentToEdit.isShared" [ngModelOptions]="{standalone: true}" >Is Shared</mat-checkbox>-->
+          <!--            <mat-label>Is shared</mat-label>-->
+          <!--            <mat-select name="docState" [ngModel]="documentToEdit.docState">-->
+          <!--              <mat-option value="{{state}}" *ngFor="let state of docStates">{{state}}</mat-option>-->
+          <!--            </mat-select>-->
+          <!--          </mat-form-field>-->
+          <!--          <section class="example-section">-->
+
+
+            <mat-checkbox [checked]="documentToEdit.isShared" labelPosition="before" (change)="changeDocSharing()">To be
+              shared?
+            </mat-checkbox>
+          <!--            <mat-checkbox class="example-margin" [(ngModel)]="indeterminate">Indeterminate</mat-checkbox>-->
+          <!--          </section>-->
+
+        </div>
+
+      </div>
+
+
       <br>
 
       <div class="card bg-light shadow rounded">

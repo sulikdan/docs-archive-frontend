@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
         this.isProcessing = false;
         this.authService.isLogged = true;
         this.authService.loggedSub.next(true);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/documents']);
 
       }
     );

@@ -8,7 +8,6 @@ import {HeaderComponent} from './header/header.component';
 import {AuthComponent} from './auth/auth.component';
 import {DocumentsComponent} from './documents/documents.component';
 import {ImportDocumentsComponent} from './import-documents/import-documents.component';
-import {ImportComponent} from './import/import.component';
 import {HomeComponent} from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -41,12 +40,12 @@ import {DocumentTagsComponent} from './documents/document-tags/document-tags.com
 import {RegisterComponent} from './auth/register/register.component';
 import {PasswordResetComponent} from './auth/password-reset/password-reset.component';
 import {LoginComponent} from './auth/login/login.component';
-import {UserComponent} from './shared/models/user/user.component';
 import {BasicAuthHttpInterceptorService} from './auth/basic-auth-http-interceptor.service';
 import {ChangePasswordComponent} from './auth/password-reset/change-password/change-password.component';
 import {ConfirmComponent} from './auth/register/confirm/confirm.component';
 
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -56,7 +55,6 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
     AuthComponent,
     DocumentsComponent,
     ImportDocumentsComponent,
-    ImportComponent,
     HomeComponent,
     AsyncApiInfoComponent,
     DocConfigComponent,
@@ -72,7 +70,6 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
     RegisterComponent,
     PasswordResetComponent,
     LoginComponent,
-    UserComponent,
     ChangePasswordComponent,
     ConfirmComponent
   ],
@@ -86,7 +83,6 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
-
     BrowserAnimationsModule,
     MatSortModule,
     MatPaginatorModule,
@@ -94,6 +90,7 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
     MatInputModule,
     MatTableModule,
     MatSelectModule,
+    MatCheckboxModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
     MatDatepickerModule,

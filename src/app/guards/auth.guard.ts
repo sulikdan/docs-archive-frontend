@@ -3,6 +3,9 @@ import {ActivatedRouteSnapshot, CanActivate, Route, Router, RouterStateSnapshot,
 import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 
+/**
+ * Authorisation guard to keep check on security/logged user.
+ */
 @Injectable({
   providedIn: 'root'
 })

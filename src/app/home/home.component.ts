@@ -2,6 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {Subscription} from 'rxjs';
 
+/**
+ * HOme component, currently being hidden/disabled.
+ */
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'

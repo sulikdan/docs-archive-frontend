@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SearchDocParams} from '../../shared/models/search-doc-params.model';
 import {Subscription} from 'rxjs';
 import {DocumentService} from '../document.service';
@@ -11,6 +11,10 @@ import {Page} from '../../shared/models/page.model';
 })
 export class DocumentSearchComponent implements OnInit, OnDestroy {
 
+  @ViewChild('selectedId', {static: false}) selectedId: ElementRef;
+  @ViewChild('selectedText', {static: false}) selectedText: ElementRef;
+  @ViewChild('selectedTag', {static: false}) selectedTag: ElementRef;
+
   newDataSub: Subscription;
 
   searchDocParams: SearchDocParams;
@@ -22,7 +26,7 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
   clickedSearchOption: string = null;
 
   searchOptions = ['Id', 'Text', 'State', 'Language', 'Text-Regex',
-    'Created date', 'Updated dates', 'Shared'];
+    'Created date', 'Updated dates', 'Shared', 'Tag'];
 
   languages = [];
 
@@ -34,6 +38,7 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
   showAdditionalSettings = false;
 
   searchTags = [];
+  writtenId: any;
 
   constructor(private documentService: DocumentService) {
   }
@@ -80,11 +85,13 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
       case this.searchOptions[0]:
         if (this.searchDocParams.ids.indexOf(providedValue) === -1) {
           this.searchDocParams.ids.push(providedValue);
+          this.selectedId.nativeElement.value = '';
         }
         break;
       case  this.searchOptions[1]:
         if (this.searchDocParams.searchedText.indexOf(providedValue) === -1) {
           this.searchDocParams.searchedText.push(providedValue);
+          this.selectedText.nativeElement.value = '';
         }
         break;
       case this.searchOptions[2]:
@@ -109,6 +116,12 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
         // this.searchDocParams.createdFrom = ;
         // this.searchDocParams.createdTo = ;
         console.log('Create date: ', this.searchDocParams.updatedFrom, this.searchDocParams.updatedTo);
+        break;
+      case  this.searchOptions[8]:
+        if (this.searchDocParams.tags.indexOf(providedValue) === -1) {
+          this.searchDocParams.tags.push(providedValue);
+          this.selectedTag.nativeElement.value = '';
+        }
         break;
       default:
         console.log('dis shoyld happend');
@@ -144,6 +157,12 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
   removeItemFromText(index: number) {
     if (index >= 0) {
       this.searchDocParams.searchedText.splice(index, 1);
+    }
+  }
+
+  removeItemFromTag(index: number) {
+    if (index >= 0) {
+      this.searchDocParams.tags.splice(index, 1);
     }
   }
 

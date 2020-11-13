@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from './auth.service';
-import {Router} from '@angular/router';
-import {NgForm} from '@angular/forms';
-import {Subscription} from 'rxjs';
 
+/**
+ * Component to wrap up user components and navigate between/them.
+ */
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -15,13 +14,7 @@ export class AuthComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // this.isLoginMode = !this.authService.isLogged;
 
-    // this.loggedSub = this.authService.loggedSub.subscribe(
-    //   value => {
-    //     this.isLoginMode = !value;
-    //   }
-    // );
   }
 
 }

@@ -11,7 +11,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {DocumentEditComponent} from './document-edit/document-edit.component';
 import {MessageService} from '../shared/services/message.service';
 
-
+/**
+ * Component containing documents data -> shown, when clicked on tab-documents.
+ */
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.component.html',
@@ -92,6 +94,10 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openDialog(action, obj) {
+    if (!obj.isOwner) {
+      return;
+    }
+
     obj.action = action;
     const dialogRef = this.dialog.open(DocumentEditComponent, {
       width: '600px',

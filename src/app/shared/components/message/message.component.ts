@@ -5,6 +5,9 @@ import {MessageService} from '../../services/message.service';
 
 declare var $: any;
 
+/**
+ * Message component, works as dialog for showing users different cases of pop-up messages - wargning, error, info ....
+ */
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',

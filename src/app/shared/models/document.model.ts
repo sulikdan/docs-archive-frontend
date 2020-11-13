@@ -14,11 +14,11 @@ export class Document {
   public docType: string;
   public createDateTime: Date;
   public updateDateTime: Date;
-  public asyncApiInfo: AsyncApiInfo; // TODO not needed
+  public asyncApiInfo: AsyncApiInfo;
   public docState: string;
   public docConfig: DocConfig;
 
-  public tags: string[]; // TODO add
+  public tags: string[];
 
   public pages: DocPage[];
 

@@ -4,6 +4,9 @@ import {Observable} from 'rxjs';
 import {DocConfig} from '../shared/models/doc-config.model';
 import {environment} from '../../environments/environment';
 
+/**
+ * Service for file work - sending files.
+ */
 @Injectable({
   providedIn: 'root'
 })
