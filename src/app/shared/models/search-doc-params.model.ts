@@ -17,4 +17,6 @@ export class SearchDocParams {
 
   isShared = null;
 
+  fullText = null;
+
 }

@@ -5,10 +5,7 @@ import {DocConfig} from './doc-config.model';
 export class Document {
   public id: string;
   public origName: string;
-  // public path: string;
-//  todo Byte[]
-//  todo byte[]
-//   public documentAsBytes: Blob;
+
   public documentPreview: string;
 
   public docType: string;
@@ -28,4 +25,5 @@ export class Document {
   // TODO specify object type
   // public thumbnail: any;
   public fileUrl: string;
+
 }

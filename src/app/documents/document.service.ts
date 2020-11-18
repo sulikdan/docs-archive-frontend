@@ -22,7 +22,8 @@ export class DocumentService {
     'PROCESSING',
     'SCANNED',
     'RESOURCE_TO_CLEAN',
-    'COMPLETED'];
+    'COMPLETED',
+    'FAILED'];
 
   changableDocStatesList = ['WAITING_TO_SEND',
     'MANUAL_SENDING',

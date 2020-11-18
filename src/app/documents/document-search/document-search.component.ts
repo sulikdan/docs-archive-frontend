@@ -21,12 +21,12 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
 
   @Input() pageSize: number;
 
-  searchOptionDropDown = 'Search options';
+  searchOptionDropDown = 'Full-text search';
 
-  clickedSearchOption: string = null;
-
-  searchOptions = ['Id', 'Text', 'State', 'Language', 'Text-Regex',
+  searchOptions = ['Full-text search', 'Id', 'Text', 'State', 'Language',
     'Created date', 'Updated dates', 'Shared', 'Tag'];
+
+  clickedSearchOption: string = this.searchOptions[0];
 
   languages = [];
 
@@ -68,6 +68,7 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
     console.log('Selected option:' + option);
     this.clickedSearchOption = option;
     this.searchOptionDropDown = option;
+    this.searchDocParams.fullText = null;
   }
 
   onAddClick(event: Event) {
@@ -83,29 +84,29 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
 
     switch (this.clickedSearchOption) {
       case this.searchOptions[0]:
+        this.searchDocParams.fullText = providedValue;
+        break;
+      case this.searchOptions[1]:
         if (this.searchDocParams.ids.indexOf(providedValue) === -1) {
           this.searchDocParams.ids.push(providedValue);
           this.selectedId.nativeElement.value = '';
         }
         break;
-      case  this.searchOptions[1]:
+      case  this.searchOptions[2]:
         if (this.searchDocParams.searchedText.indexOf(providedValue) === -1) {
           this.searchDocParams.searchedText.push(providedValue);
           this.selectedText.nativeElement.value = '';
         }
         break;
-      case this.searchOptions[2]:
+      case this.searchOptions[3]:
         if (this.searchDocParams.states.indexOf(providedValue) === -1) {
           this.searchDocParams.states.push(providedValue);
         }
         break;
-      case this.searchOptions[3]:
+      case this.searchOptions[4]:
         if (this.searchDocParams.languages.indexOf(providedValue) === -1) {
           this.searchDocParams.languages.push(providedValue);
         }
-        break;
-      case this.searchOptions[4]:
-        this.searchDocParams.textRegex = providedValue;
         break;
       case this.searchOptions[5]:
         // this.searchDocParams.createdFrom = ;
@@ -139,7 +140,7 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
   }
 
   onResetClick() {
-    this.clickedSearchOption = null;
+    this.clickedSearchOption = this.searchOptions[0];
     this.searchOptionDropDown = 'Search options';
     this.searchTags = [];
     this.searchDocParams = new SearchDocParams();
@@ -224,5 +225,19 @@ export class DocumentSearchComponent implements OnInit, OnDestroy {
 
   selectedIsShared(event: Event) {
 
+  }
+
+  onFullTextSearch($event: any) {
+    let providedValue;
+    if (this.clickedSearchOption !== this.searchOptions[5] && this.clickedSearchOption !== this.searchOptions[6]) {
+      providedValue = (document.getElementById(this.clickedSearchOption) as HTMLInputElement).value;
+    }
+
+    if (providedValue === undefined || providedValue === null) {
+      return;
+    }
+    this.searchDocParams.fullText = providedValue;
+
+    this.documentService.fetchDocuments(this.searchDocParams);
   }
 }

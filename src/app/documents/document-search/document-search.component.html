@@ -18,54 +18,62 @@
 
                   <div class="dropdown-menu">
                     <a class="dropdown-item" (click)="onSearchOptionSelect(option)"
-                       *ngFor="let option of searchOptions">{{option}}</a>
+                       *ngFor="let option of searchOptions">
+                      <div *ngIf="option !== searchOptions[1]">{{option}}</div>
+                    </a>
                   </div>
                 </div>
 
               </div>
 
               <!--  Default  -->
-              <div class="col-6 col-sm-8" *ngIf="clickedSearchOption === null" style="min-width: 265px;">
-                <input type="text" class="form-control" id="inlineFormInputName" disabled
-                       placeholder="Please select a search option">
-              </div>
+<!--              <div class="col-6 col-sm-8" *ngIf="clickedSearchOption === null" style="min-width: 265px;">-->
+<!--                <input type="text" class="form-control" id="inlineFormInputName"-->
+<!--                       placeholder="Default full-text search" (keyup.enter)="onFullTextSearch($event)">-->
+<!--              </div>-->
 
-
-              <!--  Id  -->
+              <!--  Full-text Search  -->
               <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[0]">
-                <input type="text" class="form-control" #selectedId id="{{searchOptions[0]}}" placeholder="Document id"
-                       (keyup.enter)="onAddClick($event)">
+                <input type="text" class="form-control" #selectedTag id="{{searchOptions[0]}}"
+                       placeholder="Text for full-text search.."
+                       (keyup.enter)="onFullTextSearch($event)">
               </div>
+
+<!--              &lt;!&ndash;  Id  &ndash;&gt;-->
+<!--              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[1]">-->
+<!--                <input type="text" class="form-control" #selectedId id="{{searchOptions[1]}}" placeholder="Document id"-->
+<!--                       (keyup.enter)="onAddClick($event)">-->
+<!--              </div>-->
 
               <!--  Text  -->
-              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[1]">
-                <input type="text" class="form-control" #selectedText id="{{searchOptions[1]}}"
+              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[2]">
+                <input type="text" class="form-control" #selectedText id="{{searchOptions[2]}}"
                        placeholder="Text in document"
                        (keyup.enter)="onAddClick($event)"
                 >
               </div>
 
               <!--  State  -->
-              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[2]">
-                <select name="state" class="custom-select" id="{{searchOptions[2]}}" (keyup.enter)="onAddClick($event)">
+              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[3]">
+                <select name="state" class="custom-select" id="{{searchOptions[3]}}" (keyup.enter)="onAddClick($event)">
                   <option selected>Select your document state</option>
                   <option *ngFor="let docState of docStates">{{docState}}</option>
                 </select>
               </div>
 
               <!--  Language  -->
-              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[3]">
-                <select name="language" class="custom-select" id="{{searchOptions[3]}}"
+              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[4]">
+                <select name="language" class="custom-select" id="{{searchOptions[4]}}"
                         (keyup.enter)="onAddClick($event)">
                   <option selected>Select your document language</option>
                   <option *ngFor="let language of languages">{{language}}</option>
                 </select>
               </div>
 
-              <!--  Text-Regex  -->
-              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[4]">
-                <input type="text" class="form-control" id="{{searchOptions[4]}}" placeholder="Regex for searched text">
-              </div>
+<!--              &lt;!&ndash;  Text-Regex  &ndash;&gt;-->
+<!--              <div class="col-7 col-sm-8" *ngIf="clickedSearchOption === searchOptions[4] && false">-->
+<!--                <input type="text" class="form-control" id="{{searchOptions[4]}}" placeholder="Regex for searched text">-->
+<!--              </div>-->
 
               <!--  Created-date  -->
               <div class="col-8 col-sm-8 pl-0 justify-content-center" *ngIf="clickedSearchOption === searchOptions[5]">
@@ -110,7 +118,7 @@
               <div class="text-center ml-3">
                 <button class="btn btn-primary" type="button" (click)="onAddClick($event)"
                         [disabled]="(clickedSearchOption === searchOptions[5] || clickedSearchOption ===
-                    searchOptions[6])">
+                    searchOptions[6])" [hidden]="(clickedSearchOption === null || clickedSearchOption === searchOptions[9])">
                   Add
                 </button>
               </div>
@@ -143,21 +151,21 @@
 
         <!--   Per column cards     -->
         <!--        style="width: 18rem;"-->
-        <div class="col card shadow" style="min-width: 225px;">
-          <div class="card-header">
-            <b>Ids</b>
-          </div>
-          <div class="card-body text-center">
-            <div *ngFor="let selectedId of searchDocParams.ids; let i = index;"
-                 (click)="removeItemFromIds(i)" class="d-block mt-1 mb-1">
-              <a class="badge badge-pill badge-light" style="font-size: 0.8rem;"
-                 href="javascript:void(0)">{{selectedId}}</a>
-            </div>
-            <span class="text-secondary"
-                  *ngIf="searchDocParams.ids === null || searchDocParams.ids.length === 0"> - None id selected -
-            </span>
-          </div>
-        </div>
+<!--        <div class="col card shadow" style="min-width: 225px;">-->
+<!--          <div class="card-header">-->
+<!--            <b>Ids</b>-->
+<!--          </div>-->
+<!--          <div class="card-body text-center">-->
+<!--            <div *ngFor="let selectedId of searchDocParams.ids; let i = index;"-->
+<!--                 (click)="removeItemFromIds(i)" class="d-block mt-1 mb-1">-->
+<!--              <a class="badge badge-pill badge-light" style="font-size: 0.8rem;"-->
+<!--                 href="javascript:void(0)">{{selectedId}}</a>-->
+<!--            </div>-->
+<!--            <span class="text-secondary"-->
+<!--                  *ngIf="searchDocParams.ids === null || searchDocParams.ids.length === 0"> - None id selected - -->
+<!--            </span>-->
+<!--          </div>-->
+<!--        </div>-->
 
         <div class="col card shadow" style="min-width: 225px;">
           <div class="card-header">
