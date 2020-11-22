@@ -46,6 +46,7 @@ import {ConfirmComponent} from './auth/register/confirm/confirm.component';
 
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
+import { PasswordResetContainerComponent } from './auth/password-reset/password-reset-container/password-reset-container.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
     PasswordResetComponent,
     LoginComponent,
     ChangePasswordComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    PasswordResetContainerComponent
   ],
   exports: [
     MessageComponent

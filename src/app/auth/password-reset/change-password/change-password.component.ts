@@ -20,9 +20,39 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.parent.url.subscribe((urlPath) => {
-      this.currentResetToken = urlPath[urlPath.length - 1].path;
-    });
+    // this.activatedRoute.parent.url.subscribe((urlPath) => {
+    //   this.currentResetToken = urlPath[urlPath.length - 1].path;
+    //   console.log('Reset token:', this.currentResetToken);
+    // });
+    console.log('Inside change password!!');
+
+
+    const loginUrl = this.router.url.split('/').pop();
+    console.log('Inside change password!!');
+    // console.log('Its login comp. with :' + this.router.url);
+
+    if (loginUrl.slice(0, 8) === 'password') {
+      console.log('Its password reset!');
+      const token = this.router.parseUrl(this.router.url).queryParams.token;
+      this.currentResetToken = token;
+      // if (token !== undefined) {
+      //   console.log('Token:' + token);
+      //
+      //   this.authService.changePassword(token).subscribe(
+      //     value => {
+      //       console.log('Completed registration!');
+      //       this.messageService.success('You have activated your new account!', 10 * 1000);
+      //     },
+      //     error => {
+      //       console.log('Error while completing registration.');
+      //       this.messageService.success('Error while completing registration.', 10 * 1000);
+      //     }
+      //   );
+      //
+      //   this.router.navigate([], {});
+      // }
+    }
+
   }
 
   onReset(authForm: NgForm) {
@@ -52,6 +82,9 @@ export class ChangePasswordComponent implements OnInit {
       error => {
         console.log('Return value: ' + error.toString());
         this.messageService.error('The password was not reset!\n' + error.error);
+      },
+      () => {
+        console.log('Completed new password!');
       }
     );
 
