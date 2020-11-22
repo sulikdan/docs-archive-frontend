@@ -51,7 +51,7 @@ export class ChangePasswordComponent implements OnInit {
       },
       error => {
         console.log('Return value: ' + error.toString());
-        this.messageService.error('The password was not reset!\n' + error.ge());
+        this.messageService.error('The password was not reset!\n' + error.error);
       }
     );
 

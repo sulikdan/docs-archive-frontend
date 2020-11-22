@@ -30,7 +30,7 @@ export class PasswordResetComponent implements OnInit {
         this.messageService.info('We\'ve send you reset link for the account to your mail.');
       },
       error => {
-        this.messageService.warning('Provided e-mail is not associated to any acccount.\n', error.message);
+        this.messageService.warning('Provided e-mail is not associated to any acccount.\n', error.error);
       },
       () => {
         console.log('Finished??');

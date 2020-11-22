@@ -117,7 +117,7 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
               }, 9500);
             });
           }, error => {
-            console.log('Error while patching:', error);
+            console.log('Error while patching:', error.error);
             this.messageService.error('Unexpected error occurred, while trying to update provided changes.');
           }, () => {
             this.messageService.success('The document was successfully updated.');

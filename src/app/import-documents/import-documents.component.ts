@@ -98,7 +98,7 @@ export class ImportDocumentsComponent implements OnInit {
         this.fileUploadService.postFile(this.filesSelected[i], docConfig).subscribe(data => {
             console.log('Looks all good: ', data);
           }, error => {
-            console.log('Error happend:', error);
+            console.log('Error happend:', error.error);
             this.isErrorUploading = true;
             this.isSubmiting = false;
             this.messageService.error('Unexpected error occured, while trying to upload documents.');

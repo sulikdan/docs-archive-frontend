@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit {
 
     const loginUrl = this.router.url.split('/').pop();
 
+    // console.log('Its login comp. with :' + this.router.url);
+
     if (loginUrl.slice(0, 5) === 'login') {
       console.log('Its login!');
       const token = this.router.parseUrl(this.router.url).queryParams.token;
@@ -66,10 +68,10 @@ export class LoginComponent implements OnInit {
 
 
     this.authService.login(username, password).subscribe(value => {
-        console.log('Return value', JSON.stringify(value));
+        console.log('Return value', JSON.stringify(value.error));
       },
       error => {
-        console.log('Error while logging', JSON.stringify(error));
+        console.log('Error while logging', JSON.stringify(error.error));
         this.authService.isLogged = false;
         this.authService.loggedSub.next(false);
         this.isProcessing = false;

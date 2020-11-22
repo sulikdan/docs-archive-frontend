@@ -52,8 +52,8 @@ export class RegisterComponent implements OnInit {
       value => {
       },
       error => {
-        console.log('Error to register.', error.message);
-        this.messageService.failure('Fail while trying to register new user.\n' + error.message);
+        console.log('Error to register.', error.error);
+        this.messageService.failure('Fail while trying to register new user.\n' + error.error);
         this.isProcessing = false;
       },
       () => {

@@ -159,7 +159,7 @@ export class DocumentService {
         this.newDataReceivedSubject.next(pageData);
 
       }, error => {
-        console.log('Error loading data..', error);
+        console.log('Error loading data..', error.error);
         this.newDataReceivedSubject.next(null);
         // this.newDataReceivedSubject.next(false);
       }, () => {
