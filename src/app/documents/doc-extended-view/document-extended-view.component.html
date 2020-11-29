@@ -69,7 +69,7 @@
         </tr>
         <tr>
           <th scope="row">Language</th>
-          <td>{{this.languageMap.get(row.docConfig.lang)}}</td>
+          <td>{{row.docConfig.lang.toString() | titlecase}}</td>
         </tr>
         <tr>
           <th scope="row">Scan immediately</th>
