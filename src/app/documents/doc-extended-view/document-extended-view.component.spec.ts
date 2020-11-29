@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DocExtendedViewComponent } from './doc-extended-view.component';
+import { DocumentExtendedViewComponent } from './document-extended-view.component';
 
 describe('DocExtendedViewComponent', () => {
-  let component: DocExtendedViewComponent;
-  let fixture: ComponentFixture<DocExtendedViewComponent>;
+  let component: DocumentExtendedViewComponent;
+  let fixture: ComponentFixture<DocumentExtendedViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DocExtendedViewComponent ]
+      declarations: [ DocumentExtendedViewComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DocExtendedViewComponent);
+    fixture = TestBed.createComponent(DocumentExtendedViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,10 +4,10 @@ import {DocumentService} from '../document.service';
 
 @Component({
   selector: 'app-doc-extended-view',
-  templateUrl: './doc-extended-view.component.html',
-  styleUrls: ['./doc-extended-view.component.scss']
+  templateUrl: './document-extended-view.component.html',
+  styleUrls: ['./document-extended-view.component.scss']
 })
-export class DocExtendedViewComponent implements OnInit {
+export class DocumentExtendedViewComponent implements OnInit {
 
   @Input() row: Document;
   @Input() showUpdateDate = true;

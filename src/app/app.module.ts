@@ -31,7 +31,7 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {DocumentEditComponent} from './documents/document-edit/document-edit.component';
-import {DocExtendedViewComponent} from './documents/doc-extended-view/doc-extended-view.component';
+import {DocumentExtendedViewComponent} from './documents/doc-extended-view/document-extended-view.component';
 import {MessageComponent} from './shared/components/message/message.component';
 import {MessageService} from './shared/services/message.service';
 import {FileUploadService} from './import-documents/file-upload.service';
@@ -42,8 +42,6 @@ import {PasswordResetComponent} from './auth/password-reset/password-reset.compo
 import {LoginComponent} from './auth/login/login.component';
 import {BasicAuthHttpInterceptorService} from './auth/basic-auth-http-interceptor.service';
 import {ChangePasswordComponent} from './auth/password-reset/change-password/change-password.component';
-import {ConfirmComponent} from './auth/register/confirm/confirm.component';
-
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 import { PasswordResetContainerComponent } from './auth/password-reset/password-reset-container/password-reset-container.component';
@@ -64,7 +62,7 @@ import { PasswordResetContainerComponent } from './auth/password-reset/password-
     DocumentSearchComponent,
     DatePickerPopupComponent,
     DocumentEditComponent,
-    DocExtendedViewComponent,
+    DocumentExtendedViewComponent,
     MessageComponent,
     DocumentPreviewComponent,
     DocumentTagsComponent,
@@ -72,7 +70,6 @@ import { PasswordResetContainerComponent } from './auth/password-reset/password-
     PasswordResetComponent,
     LoginComponent,
     ChangePasswordComponent,
-    ConfirmComponent,
     PasswordResetContainerComponent
   ],
   exports: [
