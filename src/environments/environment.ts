@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   backend: {
-    address: 'localhost',
+    address: 'backend-api',
     port: 8085
   }
 };
