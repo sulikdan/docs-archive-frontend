@@ -24,6 +24,7 @@ RUN npm run build -- --prod
 
 # Open the port, inside docker network default is 80
 #EXPOSE 4200
+EXPOSE 80
 
 FROM nginx:stable-alpine
 #COPY nginx.conf /etc/nginx/nginx.conf
