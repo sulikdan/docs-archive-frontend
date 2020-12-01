@@ -1,0 +1,9 @@
+<div class="dragDropFileContainer d-flex fa fa-5x fa-cloud-upload" (click)="fileInput.click()" appDragDropFile (onFileDropped)="uploadFile($event)">
+  <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+</div>
+<div  class="files-list" *ngFor="let file of files;let i=index">
+  <p class="d-flex text-center align-content-center mb-0 align-self-center">{{ file }}</p>
+  <button class="delete-fill fa fa-3x fa-trash text-danger btn disabled" title="delete" (click)="deleteAttachment(i)">
+<!--    <i ></i>-->
+  </button>
+</div>
