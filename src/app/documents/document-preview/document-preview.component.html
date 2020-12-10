@@ -2,7 +2,7 @@
   <div class="card-header text-center">
     <b>Document file preview</b>
   </div>
-  <img class="card-img text-center" src="../../../assets/hold_up.jpg" *ngIf="row.documentPreview === null" />
+  <img class="card-img text-center" src="../../../assets/no_image.png" *ngIf="row.documentPreview === null" />
 <!--  <a [href]="row.fileUrl" (click)="downloadFile(row.fileUrl)">-->
   <a href="javascript:void(0)" (click)="downloadFile(row.fileUrl, row.origName)">
   <img class="card-img text-center" [src]="imageSource" *ngIf="row.documentPreview !== null"/>
