@@ -204,7 +204,9 @@
 
     <!-- Delete -->
     <ng-template #elseTemplate>
-      Sure to delete <b>{{localData.name}}</b>?
+      <div class="text-center">
+      Sure to delete <b>{{documentToEdit.origName}}</b>?
+      </div>
     </ng-template>
     <br>
 
@@ -216,13 +218,23 @@
   <!--  </div>-->
 </form>
 
-<div class="row d-flex text-center">
+<div class="row d-flex text-center" *ngIf="action !== 'Delete'">
   <div class="col">
-    <button mat-button type="submit" (click)="doAction(documentForm)" mat-flat-button
+    <button mat-button type="submit" (click)="doAction(documentForm)" mat-raised-button
             color="primary">{{action}}</button>
   </div>
   <div class="col">
-    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+    <button mat-button (click)="closeDialog()" mat-raised-button color="warn">Cancel</button>
+  </div>
+</div>
+
+<div class="row d-flex text-center" *ngIf="action === 'Delete'">
+  <div class="col">
+    <button type="submit" (click)="doAction(documentForm)" mat-raised-button
+            color="warn" >{{action}}</button>
+  </div>
+  <div class="col">
+    <button (click)="closeDialog()" mat-raised-button>Cancel</button>
   </div>
 </div>
 

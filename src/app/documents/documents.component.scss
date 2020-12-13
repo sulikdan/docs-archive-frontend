@@ -6,6 +6,7 @@
 //}
 
 table {
+  text-align: center !important;
   width: 100%;
 }
 
@@ -52,3 +53,18 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
   opacity: 0.5;
 }
+
+.mat-header-cell {
+  //display:flex;
+  text-align: center;
+  //justify-content:flex-end;
+}
+
+.mat-header-row{
+  text-align: center;
+}
+
+//.mat-cell {
+//  text-align: center;
+//  justify-content:center;
+//}

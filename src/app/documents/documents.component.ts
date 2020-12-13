@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {DocumentService} from './document.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
@@ -25,7 +25,7 @@ import {MessageService} from '../shared/services/message.service';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
-  // encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.Emulated,
 })
 export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -41,12 +41,29 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
   expandedElement: Document | null;
   // https://www.freakyjolly.com/angular-material-table-operations-using-dialog/
   displayedColumnsOriginal = ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus', 'action'];
+  // displayedColumnsChoices = [
+  //   ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus', 'action'],
+  //   ['id', 'origName', 'createDateTime', 'documentProcessStatus', 'action'],
+  //   ['id', 'origName', 'documentProcessStatus', 'action'],
+  //   ['id', 'documentProcessStatus', 'action']
+  // ];
+
   displayedColumnsChoices = [
-    ['id', 'origName', 'createDateTime', 'updateDateTime', 'documentProcessStatus', 'action'],
-    ['id', 'origName', 'createDateTime', 'documentProcessStatus', 'action'],
-    ['id', 'origName', 'documentProcessStatus', 'action'],
-    ['id', 'documentProcessStatus', 'action']
+    ['Id', 'Original name', 'Created date', 'Updated date', 'Scanning status', 'Actions'],
+    ['Id', 'Original name', 'Created date', 'Scanning status', 'Actions'],
+    ['Id', 'Original name', 'Scanning status', 'Actions'],
+    ['Id', 'Scanning status', 'Actions']
   ];
+
+  columnsDictionary = {
+    Id: 'id',
+    'Original name': 'origName',
+    'Created date': 'createDateTime',
+    'Updated date': 'updateDateTime',
+    'Scanning status': 'documentProcessStatus',
+    Actions: 'action'
+  };
+
   displayedColumnsCurrent = [];
 
   dataSource: MatTableDataSource<Document> = new MatTableDataSource<Document>();
@@ -72,7 +89,7 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.paginator.pageSize = this.pageSize;
 
     // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
     this.newDataSub = this.documentService.newDataReceivedSubject.subscribe((data: Page) => {
       if (data) {
@@ -80,7 +97,7 @@ export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.totalSize = data.totalElements;
         this.documents = data.content;
         this.dataSource = new MatTableDataSource<Document>(this.documents);
-        this.dataSource.sort = this.sort;
+        // this.dataSource.sort = this.sort;
       }
       this.loadingIndicator = false;
     });
