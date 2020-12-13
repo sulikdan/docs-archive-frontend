@@ -12,9 +12,11 @@
       This document doesn't have image, therefore it is not download-able.
     </div>
     <div class="card-content text-center" *ngIf="row.documentPreview !== null">
-      To Display image clink on the image or following
-      <a href="javascript:void(0)" (click)="downloadFile(row.fileUrl,row.origName)">link</a>
-      .
+      To Display/download full image click on the image or the following button:
+      <br>
+      <button type="button" class="btn btn-primary" (click)="downloadFile(row.fileUrl,row.origName)">Download file</button>
+<!--      <a href="javascript:void(0)" >link</a>-->
+<!--      .-->
     </div>
   </div>
 </div>

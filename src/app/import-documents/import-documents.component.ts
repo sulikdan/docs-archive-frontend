@@ -23,11 +23,11 @@ export class ImportDocumentsComponent implements OnInit {
   isMaximumBatches = false;
   waitForLastBatchToBeFilled = false;
 
-  isEmpty = true;
+  isEmpty = false;
 
   batchDocsCount = 1;
 
-  filesSelected: File[][] = [null];
+  filesSelected: File[][] = [[]];
 
   docBatches: FormArray;
 
@@ -47,6 +47,9 @@ export class ImportDocumentsComponent implements OnInit {
       console.log(value);
     });
 
+    // const fileArr: File[] = [];
+    // fileArr.push
+    // this.filesSelected.push(fileArr);
   }
 
   onFileChange(event: Event, index: number) {
@@ -75,9 +78,30 @@ export class ImportDocumentsComponent implements OnInit {
   }
 
   onSubmitDocs() {
+    let atLeastOneFile = false;
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.filesSelected.length; i++) {
+      if (this.filesSelected[i].length > 0) {
+        atLeastOneFile = true;
+        break;
+      }
+    }
+
+    if (!atLeastOneFile) {
+      this.messageService.warning('Some files need to be selected to upload.');
+      return;
+    }
+    // if (this.filesSelected[0].length <= 0) {
+    //   this.messageService.warning('Some files need to be selected to upload.');
+    //   return;
+    // }
 
     for (let i = 0; i < this.docBatches.length; i++) {
       this.isSubmiting = true;
+
+      if (this.filesSelected[i].length <= 0) {
+        continue;
+      }
 
       const control = this.docBatches.at(i);
       if (control instanceof FormGroup) {
@@ -127,7 +151,13 @@ export class ImportDocumentsComponent implements OnInit {
   }
 
   onAddBatch() {
-    if (!(this.docBatches.at(this.docBatches.length - 1) as FormGroup).get('file').dirty) {
+    // if (!(this.docBatches.at(this.docBatches.length - 1) as FormGroup).get('file').dirty) {
+    //   this.waitForLastBatchToBeFilled = true;
+    //   return;
+    // }
+    console.log(this.filesSelected.length, ' and ', this.filesSelected[this.filesSelected.length - 1].length);
+
+    if (this.filesSelected[this.filesSelected.length - 1].length <= 0) {
       this.waitForLastBatchToBeFilled = true;
       return;
     }
@@ -140,7 +170,7 @@ export class ImportDocumentsComponent implements OnInit {
     }
 
     this.docBatches.push(this.createForm(this.docBatches.at(this.docBatches.length - 1) as FormGroup));
-    this.filesSelected.push(null);
+    this.filesSelected.push([]);
   }
 
   createForm(data: FormGroup) {

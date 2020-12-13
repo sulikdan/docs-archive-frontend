@@ -10,28 +10,31 @@
     <div class="row p-3 d-flex justify-content-center">
 
       <!--Files selection-->
+<!--      <div class="col">-->
+
+<!--        <div class="row">-->
+<!--          <div class="col custom-file ml-3 mr-3">-->
+<!--            <input class="custom-file-input float-left" type="file" id="file" multiple-->
+<!--                   formControlName="file" (change)="onFileChange($event, i)">-->
+<!--            <label class="custom-file-label" for="file">-->
+<!--              Select file...-->
+<!--            </label>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="card mt-3">-->
+<!--          <div class="card-header">List of selected files:</div>-->
+<!--          <ul class="list-group list-group-flush"-->
+<!--              *ngFor="let file of filesSelected[i]">-->
+<!--            <li class="list-group-item" *ngIf="file !== null" cli>-->
+<!--             <a href="javascript:void(0)" class="badge badge-secondary"><h4 class="text-center align-middle align-content-center justify-content-center">{{ file.name }}</h4></a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+
+<!--      </div>-->
       <div class="col">
-
-        <div class="row">
-          <div class="col custom-file ml-3 mr-3">
-            <input class="custom-file-input float-left" type="file" id="file" multiple
-                   formControlName="file" (change)="onFileChange($event, i)">
-            <label class="custom-file-label" for="file">
-              Select file...
-            </label>
-          </div>
-        </div>
-
-        <div class="card mt-3">
-          <div class="card-header">List of selected files:</div>
-          <ul class="list-group list-group-flush"
-              *ngFor="let file of filesSelected[i]">
-            <li class="list-group-item" *ngIf="file !== null">
-              {{ file.name }}
-            </li>
-          </ul>
-        </div>
-
+        <app-drag-drop-file [filesToUpload]="filesSelected[i]"></app-drag-drop-file>
       </div>
 
       <!--Document config selection-->

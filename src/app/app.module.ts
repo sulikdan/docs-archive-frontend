@@ -46,6 +46,9 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 import { PasswordResetContainerComponent } from './auth/password-reset/password-reset-container/password-reset-container.component';
 
+import {DragDropFileDirective} from './import-documents/drag-drop-file.directive';
+import { DragDropFileComponent } from './import-documents/drag-drop-file/drag-drop-file.component';
+
 
 @NgModule({
   declarations: [
@@ -70,7 +73,9 @@ import { PasswordResetContainerComponent } from './auth/password-reset/password-
     PasswordResetComponent,
     LoginComponent,
     ChangePasswordComponent,
-    PasswordResetContainerComponent
+    PasswordResetContainerComponent,
+    DragDropFileDirective,
+    DragDropFileComponent
   ],
   exports: [
     MessageComponent
