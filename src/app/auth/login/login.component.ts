@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     // console.log('Its login comp. with :' + this.router.url);
 
     if (loginUrl.slice(0, 5) === 'login') {
-      console.log('Its login!');
+      // console.log('Its login!');
       const token = this.router.parseUrl(this.router.url).queryParams.token;
       if (token !== undefined) {
         console.log('Token:' + token);
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
     const username = authForm.value.inputUsername;
     const password = authForm.value.inputPassword;
 
-    console.log('Send data: ', username, password);
+    // console.log('Send data: ', username, password);
 
 
     this.authService.login(username, password).subscribe(value => {
@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
         this.authService.isLogged = false;
         this.authService.loggedSub.next(false);
         this.isProcessing = false;
+        this.messageService.error('Wrong user name or password.', 2 * 1000);
         // this.authService.authenticateLocal(username, password).subscribe(value => {
         //
         //   },
